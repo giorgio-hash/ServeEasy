@@ -1,0 +1,155 @@
+\documentclass[12pt,a4paper,openright,titlepage,twoside]{book}
+\usepackage[T1]{fontenc} % codifica dei font
+\usepackage[utf8]{inputenc} % lettere accentate da tastiera
+% Includere pagine pdf (frontespizio)
+\usepackage{pdfpages}
+% tesi in italiano
+\usepackage[italian]{babel}
+% Margini: 3 cm sopra, sotto e sui lati 
+\usepackage{geometry}
+\geometry{a4paper,top=3cm,bottom=3cm,left=3cm,right=3cm,heightrounded}
+% Interlinea 1.5
+\usepackage{setspace}
+\onehalfspacing
+\raggedbottom
+\usepackage{newtxtext,newtxmath}
+% Numerazione pagine in basso a dx e sx e intestazione in alto
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{#1}}{}} %rimuovi l'enumerazione dei capitoli dall'intestazione
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhf{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyhead[LE,RO]{\slshape \rightmark}
+\fancyhead[LO,RE]{\slshape \leftmark}
+%headheight
+\setlength{\headheight}{14.49998pt}
+% Pagine bianche senza intestazione
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+	\hbox{}
+	\vspace*{\fill}
+	\vspace{\fill}
+	\thispagestyle{empty}
+	\newpage
+	\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+% sommario
+\newenvironment{abstract}%
+{\cleardoublepage%
+	\thispagestyle{empty}% non rendo visibile la numerazione
+	\null \vfill\begin{center}%
+		\bfseries \abstractname \end{center}}%
+{\vfill\null}
+\providecommand{\abstract}{}
+% Titoli
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+{\normalfont\bfseries}{}{0pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-50pt}{40pt}
+% Bibliografia
+\usepackage[autostyle, italian=guillemets]{csquotes}
+\usepackage[backend=biber, style=numeric]{biblatex}
+\usepackage{guit} 
+\addbibresource{bibliografia.bib}
+% Riferimenti incrociati
+\usepackage[italian]{varioref}
+% citazioni
+\usepackage{quoting}
+\quotingsetup{font=small}
+%commenti
+\usepackage{comment}
+% Acronimi
+\usepackage[printonlyused,withpage]{acronym}
+% Figure
+\usepackage{graphicx}
+\usepackage[nottoc]{tocbibind}
+\usepackage{wrapfig}
+\usepackage{float}
+% math
+\usepackage{amsmath}
+% Didascalie
+\usepackage[font=small,format=hang,labelfont={sf,bf}]{caption}
+\usepackage{subcaption}
+% tabelle
+\usepackage{tabularx}
+% Codice
+%\usepackage{listings}
+\usepackage{listings,xcolor}
+\addto\captionsitalian{%
+	\renewcommand{\lstlistingname}{Codice}
+	\renewcommand{\lstlistlistingname}{Elenco dei codici}}
+\definecolor{codeCommentGray}{rgb}{0.55,0.55,0.55}
+\definecolor{codeNaturalColorSystem}{rgb}{0,0.48,0.65}
+\definecolor{codeDarkMagenta}{rgb}{0.53,0.06,0.58}
+\definecolor{codeMediumDarkblue}{rgb}{0,0.20,0.70}
+\definecolor{codeOliveGreen}{rgb}{0.50,0.50,0}
+\definecolor{codeNumberColor}{rgb}{0.09,0.31,0.92}
+\definecolor{codeDarkGreen}{rgb}{0.02,0.49,0.09}
+%\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+	%	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codeCommentGray},
+	keywordstyle=\color{codeMediumDarkblue},
+	numberstyle=\tiny, %\color{codegray},
+	stringstyle=\color{codeDarkGreen},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2,
+	frame=lines
+}
+%\lstset{emph={acronym,shortName,extendedName,code,correction},
+	%	emphstyle=\color{codeDarkMagenta},
+	%	emph={[2]Acronimo},
+	%	emphstyle={[2]\color{codeNaturalColorSystem}}}
+\lstset{style=mystyle}
+\lstset{language=[AspectJ]Java}
+\lstset{moredelim=[is][\color{codeNaturalColorSystem}]{|*}{*|}}
+\lstset{moredelim=[is][\color{codeNumberColor}]{?*}{*?}}
+\lstset{moredelim=[is][\color{black}]{!*}{*!}}
+% Collegamenti ipertestuali e al Web
+\usepackage[colorlinks]{hyperref} % sempre per ultimo
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=magenta,      
+	urlcolor=cyan,
+}
+%\hypersetup{hidelinks}
+
+
+\begin{document}
+	
+	\frontmatter	
+	\input{resources/Frontespizio}
+%	\input{inizio/sommario}
+	\mainmatter				
+	\tableofcontents	% indice generale
+	\listoffigures		% indice delle figure
+	\lstlistoflistings  %indice del codice
+	%	\addcontentsline{toc}{chapter}{Elenco dei codici}
+	\chapter{Iterazione 0}
+	\input{iterazione0/introduzione}
+	\input{iterazione0/requisiti_funzionali}
+	\input{iterazione0/requisiti_non_funzionali}
+	\input{iterazione0/topologia}
+	\input{iterazione0/toolchain}
+	\chapter{Iterazione 1}
+	\input{iterazione1/introduzione}
+	\input{iterazione1/use_cases}
+	\input{iterazione1/component_diagram}
+	\input{iterazione1/database}
+        \input{iterazione1/interface_class_diagram}
+	\input{iterazione1/algoritmo}
+	\backmatter	
+	
+\end{document}
