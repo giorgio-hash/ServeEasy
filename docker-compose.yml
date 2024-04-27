@@ -1,6 +1,27 @@
 ---
 version: '3.4'
 services:
+  GestioneCucina:
+    image: gchirico1/gestione_cucina:latest
+    container_name: GestioneCucina
+    restart: always
+    environment:
+      SERVER_PORT: 8080
+      SERVER_ADDRESS: 0.0.0.0
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/serveeasy
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: broker:29092 #plaintext_internal
+    depends_on:
+      broker:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      start_period: 40s
+    expose:
+      - "8080"
+    ports:
+      - "8082:8080"
 
   GestioneCliente:
     image: gchirico1/gestione_cliente:latest
@@ -15,7 +36,7 @@ services:
       db:
         condition: service_healthy
       broker:
-        condition: service_started
+        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
       interval: 20s
@@ -40,7 +61,7 @@ services:
       db:
         condition: service_healthy
       broker:
-        condition: service_started
+        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
       interval: 20s
@@ -75,6 +96,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD","/usr/bin/kafka-topics","--list","--bootstrap-server","broker:9092"]
+      interval: 30s
+      timeout: 30s
+      retries: 4
 
   kafdrop:
     image: obsidiandynamics/kafdrop
