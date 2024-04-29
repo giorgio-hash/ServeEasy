@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "1d413e1b-bcd6-454b-bdc5-5113070edd41",
+		"name": "PAC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20761533"
+	},
+	"item": [
+		{
+			"name": "serveeasy_test",
+			"item": [
+				{
+					"name": "tavolo1_nuova_comanda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/cliente/tavolo1/comanda/new"
+					},
+					"response": []
+				},
+				{
+					"name": "tavolo1_nuovo_ordine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "idcliente",
+									"value": "tavolo1",
+									"type": "text"
+								},
+								{
+									"key": "idpiatto",
+									"value": "PAS450",
+									"type": "text"
+								}
+							]
+						},
+						"url": "localhost:8081/cliente/order/add"
+					},
+					"response": []
+				},
+				{
+					"name": "cucina_scarica_coda_PASTA",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8082/cucina/codapostazione/PASTA"
+					},
+					"response": []
+				},
+				{
+					"name": "postazione_PASTA_prepara_ordine",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "postazione_PASTA_completa_ordine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\" : 1, \"idComanda\" : 1, \"stato\" : 0}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/cucina/codapostazione/PASTA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"cucina",
+								"codapostazione",
+								"PASTA"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "idComanda",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "stato",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
