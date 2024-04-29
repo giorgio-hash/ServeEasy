@@ -13,6 +13,8 @@ services:
     depends_on:
       broker:
         condition: service_healthy
+      db:
+        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
       interval: 20s
@@ -128,7 +130,7 @@ services:
       retries: 3
       timeout: 30s
     volumes:
-      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./db/initial-data-and-schema.sql:/docker-entrypoint-initdb.d/initial-data-and-schema.sql
       - ./db/db_data/:/var/lib/mysql
     ports:
       - "3306:3306"
