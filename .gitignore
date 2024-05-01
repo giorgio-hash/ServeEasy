@@ -2,7 +2,7 @@
 .idea
 
 #Database folder
-db/**
+db/db_data/**
 
 # Compiled class file
 *.class
