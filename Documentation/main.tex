@@ -52,7 +52,7 @@
 \usepackage[autostyle, italian=guillemets]{csquotes}
 \usepackage[backend=biber, style=numeric]{biblatex}
 \usepackage{guit} 
-\addbibresource{bibliografia.bib}
+\addbibresource{bibliography.bib}
 % Riferimenti incrociati
 \usepackage[italian]{varioref}
 % citazioni
@@ -148,8 +148,12 @@
 	\input{iterazione1/use_cases}
 	\input{iterazione1/component_diagram}
 	\input{iterazione1/database}
-        \input{iterazione1/interface_class_diagram}
-	\input{iterazione1/algoritmo}
+    \input{iterazione1/interface_class_diagram}
+    \input{iterazione1/api}
+    \chapter{Iterazione 2}
+	\input{iterazione2/algoritmo}
+    \nocite{*}
+    \printbibliography
 	\backmatter	
-	
+ 
 \end{document}

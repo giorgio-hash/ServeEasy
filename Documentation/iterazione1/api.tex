@@ -1,0 +1,37 @@
+\section{Documentazione delle API}
+
+Le API esposte dai microservizi sono state testate tramite \href{https://www.postman.com/}{postman} utilizzato in locale tramite \href{https://www.postman.com/downloads/postman-agent/}{postman agent} creando un workspace condiviso tra il team.
+
+Il microservizio GestioneComanda è sprovvisto di un componente HTTP Controller nella sua Interfaccia (che contiene solo EventController), viene quindi creato un controller di TEST per interagire direttamente con i componenti del servizio ai soli fini di test.
+
+\subsubsection{zoom-in interface di gestione comanda}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{iterazione1/images/component_comanda_w_test-GestioneComanda__Interface.jpg}
+	\caption{Component diagram - Gestione Comanda - Interface con Test
+    \label{fig:component_comanda_w_test-GestioneComanda__Interface}}
+\end{figure}
+\begin{itemize}
+    \item EventControllers: SubCucina e SubCliente, permettono la ricezione di messaggi tramite message broker dagli altri microservizi.
+    \item TestControllers: TestAPI per poter testare le API di Test utilizzando direttamente la DataPort e la MessagePort
+\end{itemize}
+
+
+Viene di seguito allegata la documentazione delle API redatta utilizzando lo strumento \href{https://www.postman.com/api-documentation-tool/}{documenter.getpostman}, link ai documenti ufficiali con anche esempi:
+\begin{itemize}
+    \item Gestione Comanda: \href{https://documenter.getpostman.com/view/32004409/2sA3JDhkaG}{https://documenter.getpostman.com/view/32004409/2sA3JDhkaG}
+    \item Gestione Cliente: \href{https://documenter.getpostman.com/view/32004409/2sA3JFBQDv}{https://documenter.getpostman.com/view/32004409/2sA3JFBQDv}
+    \item Gestione Cucina: \href{https://documenter.getpostman.com/view/32004409/2sA3JF9iav}{https://documenter.getpostman.com/view/32004409/2sA3JF9iav}
+\end{itemize}
+
+%\subsection{API di Gestione Comanda}
+\includepdf[pages=-,pagecommand={\thispagestyle{fancy}},fitpaper=true]{iterazione1/resources/Postman-GestioneComanda.pdf}
+
+%\subsection{API di Gestione Cliente}
+\includepdf[pages=-,pagecommand={\thispagestyle{fancy}},fitpaper=true]{iterazione1/resources/Postman-GestioneCliente.pdf}
+
+%\subsection{API di Gestione Cucina}
+\includepdf[pages=-,pagecommand={\thispagestyle{fancy}},fitpaper=true]{iterazione1/resources/Postman-GestioneCucina.pdf}
+
+
+\clearpage
