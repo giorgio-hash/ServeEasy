@@ -1,10 +1,57 @@
 ---
 version: '3.4'
 services:
+  GestioneCucina:
+    image: gchirico1/gestione_cucina:latest
+    container_name: GestioneCucina
+    restart: always
+    environment:
+      SERVER_PORT: 8080
+      SERVER_ADDRESS: 0.0.0.0
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/serveeasy
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: broker:29092 #plaintext_internal
+    depends_on:
+      broker:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      start_period: 40s
+    expose:
+      - "8080"
+    ports:
+      - "8082:8080"
+
+  GestioneCliente:
+    image: gchirico1/gestione_cliente:latest
+    container_name: GestioneCliente
+    restart: always
+    environment:
+      SERVER_PORT: 8080
+      SERVER_ADDRESS: 0.0.0.0
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/serveeasy
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: broker:29092 #plaintext_internal
+    depends_on:
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      start_period: 40s
+    expose:
+      - "8080"
+    ports:
+      - "8081:8080"
+
 
   GestioneComanda:
-    image: serveeasy/gestione_comanda:latest
-    build: .
+    image: gchirico1/gestione_comanda:latest
     container_name: GestioneComanda
     restart: always
     environment:
@@ -16,7 +63,7 @@ services:
       db:
         condition: service_healthy
       broker:
-        condition: service_started
+        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
       interval: 20s
@@ -51,6 +98,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD","/usr/bin/kafka-topics","--list","--bootstrap-server","broker:9092"]
+      interval: 30s
+      timeout: 30s
+      retries: 4
 
   kafdrop:
     image: obsidiandynamics/kafdrop
@@ -64,7 +116,7 @@ services:
       - "broker"
 
   db:
-    image: mariadb:latest
+    image: mariadb:11.4-rc
     container_name: mariadb
     restart: always
     environment:
@@ -78,14 +130,15 @@ services:
       retries: 3
       timeout: 30s
     volumes:
-      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./db/initial-data-and-schema.sql:/docker-entrypoint-initdb.d/initial-data-and-schema.sql
       - ./db/db_data/:/var/lib/mysql
     ports:
       - "3306:3306"
 
   
   phpmyadmin:
-    image: phpmyadmin:latest
+    image: phpmyadmin:5.2.1-apache
+    container_name: phpmyadmin
     restart: always
     ports:
     - "3307:80"

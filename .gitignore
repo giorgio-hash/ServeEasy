@@ -1,5 +1,8 @@
+#IDE
+.idea
+
 #Database folder
-db/**
+db/db_data/**
 
 # Compiled class file
 *.class
@@ -328,3 +331,4 @@ Documentation/*.xwm
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
+
