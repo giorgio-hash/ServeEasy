@@ -26,7 +26,7 @@ Rappresentazione della struttura dei dati all’interno del database. L’attrib
 \newpage
 Il modello logico è implementato con le seguenti query al database:
 
-\begin{lstlisting}[language=SQL,caption=Query del database in SQL,label=lst:sqlcode]
+\begin{lstlisting}[style=sqlstyle,caption=Query del database in SQL,label=lst:sqlcode]
 CREATE TABLE IF NOT EXISTS Cliente(
     ID varchar(10) PRIMARY KEY,
     t_o_a boolean NOT NULL
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS Ordine(
     ID_piatto varchar(20) NOT NULL,
     stato int(1) DEFAULT 0, -- 0=creato, 1=in coda, 2=in preparazione, 3=completato
     t_ordinazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    urgenza_cliente int(2) DEFAULT 0, -- priorità del cliente: 1=massima, -1=minima
+    urgenza_cliente int(2) DEFAULT 0, -- priorita' del cliente: 1=massima, -1=minima
     FOREIGN KEY (ID_comanda) REFERENCES Comanda(ID),
     FOREIGN KEY (ID_piatto) REFERENCES Piatto(ID),
     CHECK (stato >= 0 AND stato <= 3 )
