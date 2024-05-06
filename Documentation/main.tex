@@ -80,6 +80,7 @@
 \addto\captionsitalian{%
 	\renewcommand{\lstlistingname}{Codice}
 	\renewcommand{\lstlistlistingname}{Elenco dei codici}}
+ % colori personalizzati
 \definecolor{codeCommentGray}{rgb}{0.55,0.55,0.55}
 \definecolor{codeNaturalColorSystem}{rgb}{0,0.48,0.65}
 \definecolor{codeDarkMagenta}{rgb}{0.53,0.06,0.58}
@@ -87,32 +88,102 @@
 \definecolor{codeOliveGreen}{rgb}{0.50,0.50,0}
 \definecolor{codeNumberColor}{rgb}{0.09,0.31,0.92}
 \definecolor{codeDarkGreen}{rgb}{0.02,0.49,0.09}
-%\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-\lstdefinestyle{mystyle}{
-	%	backgroundcolor=\color{backcolour},   
-	commentstyle=\color{codeCommentGray},
+\definecolor{codeDarkyellow}{rgb}{0.69,0.6,0.12}
+\definecolor{codeCyan}{rgb}{0.12,0.62,0.65}
+% Definizione dei linguaggi:
+% Definizione del linguaggio docker-compose
+\lstdefinelanguage{docker-compose}{
+    keywords={version, services, networks, volumes, image, ports, build, environment, command, 
+    container_name, restart, ZOOKEEPER_CLIENT_PORT, ZOOKEEPER_TICK_TIME,
+    depends_on, KAFKA_BROKER_ID, KAFKA_ZOOKEEPER_CONNECT, KAFKA_LISTENER_SECURITY_PROTOCOL_MAP,
+    KAFKA_ADVERTISED_LISTENERS, KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR, KAFKA_TRANSACTION_STATE_LOG_MIN_ISR, KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR, KAFKA_BROKERCONNECT },
+    keywordstyle=\color{codeMediumDarkblue}\bfseries,
+    identifierstyle=\color{black},
+    sensitive=false,
+    comment=[l]{\#},
+    commentstyle=\color{gray}\ttfamily,
+    stringstyle=\color{codeDarkGreen}\ttfamily,
+    morestring=[b]",
+    morestring=[b]',
+}
+% Definizione del linguaggio YAML
+\lstdefinelanguage{yaml}{
+    keywords={true,false,null,y,n,
+    spring, kafka, bootstrap, servers , producer, topic, group,id, consumer, auto, offset, reset, jpa, properties, hibernate, dialect, temp, use_jdbc_metadata_defaults, ddl, show, sql, datasource, url, username, password, driver, class, name, on, push, branches, pull_request, jobs, build, runs, if, steps, uses, with, java, version, distribution, cache, run},
+    keywordstyle=\color{codeMediumDarkblue}\bfseries,
+    sensitive=true,
+    comment=[l]{\#},
+    commentstyle=\color{gray}\ttfamily,
+    stringstyle=\color{codeDarkGreen}\ttfamily,
+}
+% Definizione del linguaggio XML
+\lstdefinelanguage{XML}{
+    keywords={dependency,groupId,artifactId, scope, version},
+    keywordstyle=\color{codeMediumDarkblue}\bfseries,
+    sensitive=false,
+    comment=[s]{<!--}{-->},
+    commentstyle=\color{gray}\ttfamily,
+    stringstyle=\color{codeDarkGreen}\ttfamily,
+}
+% Definizione del nuovo stile di codice per il terminale
+\lstdefinestyle{terminal}{
+    basicstyle=\footnotesize\ttfamily\color{white}, % Stile di base del testo (font terminale)
+    backgroundcolor=\color{black}, % Colore di sfondo (nero)
+    frame=single, % Cornice intorno al codice
+    frameround=fttt, % Stile del bordo della cornice
+    rulecolor=\color{gray}, % Colore della linea della cornice
+    numberstyle=\tiny\color{gray}, % Stile dei numeri di riga (grigio)
+    numbers=left, % Posizione dei numeri di riga (sinistra)
+    breaklines=true, % Auto-interruzione delle linee lunghe
+    showstringspaces=false, % Non mostrare spazi in stringhe
+    captionpos=b, % Posizione della didascalia: sotto
+    escapeinside={(*@}{@*)}, % Permette di utilizzare comandi LaTeX all'interno del codice
+    extendedchars=true, % Abilita caratteri estesi
+    literate=%
+        {à}{{\`a}}1
+        {è}{{\`e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {€}{{\euro{}}}1
+        {°}{{\textdegree{}}}1
+}
+% Impostazioni per l'inclusione del codice
+\lstset{
+    basicstyle=\footnotesize\ttfamily, % Stile di base del testo
+    numbers=left, % Numeri di riga a sinistra
+    numberstyle=\tiny\color{gray}, % Stile dei numeri di riga
+    stepnumber=1, % Passo tra i numeri di riga
+    showstringspaces=false, % Non mostrare spazi in stringhe
+    breaklines=true, % Auto-interruzione delle linee lunghe
+    breakatwhitespace=false, % Interruzione solo negli spazi bianchi
+    frame=lines, % linee intorno al codice
+    backgroundcolor=\color{gray!5}, % Colore di sfondo del blocco di codice
+    captionpos=b, % Posizione della didascalia: sotto
+}
+% Sovrascrittura delle impostazioni per il linguaggio AspectJ Java
+\lstdefinestyle{myJava}{
+    language=[AspectJ]Java,
+    emph={@Configuration, @Value, @Bean, @Service, @Log, @Autowired, @Override, @BeforeEach, @Test, @EnableKafka, @SpringBootTest, @DirtiesContext, TestMethodOrder, @EmbeddedKafka, @TestMethodOrder, @KafkaListener, @Payload, @Header, @Data, @AllArgsConstructor, @NoArgsConstructor, @Builder, @Entity, @Table, @Id, @GeneratedValue, @Column, @Basic, @CreationTimestamp, @Repository, @ExtendWith, @Component, @GetMapping, @PostMapping, @RequestBody, @DeleteMapping, @PatchMapping, @RequestMapping, @RestController, @AutoConfigureMockMvc},
+    emphstyle={\color{codeDarkyellow}},
+    commentstyle=\color{codeCommentGray},
 	keywordstyle=\color{codeMediumDarkblue},
-	numberstyle=\tiny, %\color{codegray},
 	stringstyle=\color{codeDarkGreen},
 	basicstyle=\ttfamily\footnotesize,
-	breakatwhitespace=false,         
-	breaklines=true,                 
-	captionpos=b,                    
 	keepspaces=true,                 
-	numbers=left,                    
 	numbersep=5pt,                  
 	showspaces=false,                
 	showstringspaces=false,
 	showtabs=false,                  
 	tabsize=2,
-	frame=lines
 }
-%\lstset{emph={acronym,shortName,extendedName,code,correction},
-	%	emphstyle=\color{codeDarkMagenta},
-	%	emph={[2]Acronimo},
-	%	emphstyle={[2]\color{codeNaturalColorSystem}}}
-\lstset{style=mystyle}
-\lstset{language=[AspectJ]Java}
+\lstdefinestyle{sqlstyle}{
+    language=SQL, % Impostazione del linguaggio SQL
+    basicstyle=\footnotesize\ttfamily, % Stile di base del testo
+    commentstyle=\color{gray}, % Stile dei commenti (grigio)
+    keywordstyle=\color{blue}, % Stile delle parole chiave (blu)
+    stringstyle=\color{red}, % Stile delle stringhe (rosso)
+}
 \lstset{moredelim=[is][\color{codeNaturalColorSystem}]{|*}{*|}}
 \lstset{moredelim=[is][\color{codeNumberColor}]{?*}{*?}}
 \lstset{moredelim=[is][\color{black}]{!*}{*!}}
@@ -149,6 +220,7 @@
 	\input{iterazione1/component_diagram}
 	\input{iterazione1/database}
     \input{iterazione1/interface_class_diagram}
+    \input{iterazione1/costruzione_scheletro}
     \input{iterazione1/api}
     \chapter{Iterazione 2}
 	\input{iterazione2/algoritmo}
