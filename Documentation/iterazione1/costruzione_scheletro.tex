@@ -41,7 +41,8 @@ Il deployment verrà effettuato tramite Docker Compose: vengono definiti in un u
 \subsection{Definizione Interfacce}
 % nota: metterei solo quelle di gestione comanda oppure quelle che ci servono per spiegare
 \begin{lstlisting}[style=myJava, 
-    caption={Interfaccia MessagePort}, label=lst:messageport,]
+    caption={Interfaccia MessagePort}, label=lst:messageport, emph={[3] send},
+    emphstyle={[3]\color{codeCyan}}]
 public interface MessagePort<T> {
     /**
      * Invia l'oggetto passato come parametro sul topic del message broker
@@ -54,7 +55,9 @@ public interface MessagePort<T> {
 \end{lstlisting}
 
 \begin{lstlisting}[style=myJava, 
-    caption={Interfaccia DataPort}, label=lst:dataport]
+    caption={Interfaccia DataPort}, label=lst:dataport,
+    emph={[3] isOrderExist, saveOrder, getOrderById, updateOrder, findAllOrdersByIdComanda, deleteOrder},
+    emphstyle={[3]\color{codeCyan}}]
 public interface DataPort {
 
     /**
@@ -109,7 +112,9 @@ public interface DataPort {
 \end{lstlisting}
 
 \begin{lstlisting}[style=myJava, 
-    caption={Interfaccia NotifyOrderEvent}, label=lst:notifyordereventIF,]
+    caption={Interfaccia NotifyOrderEvent}, label=lst:notifyordereventIF,
+    emph={[3] getLastMessageReceived, receive},
+    emphstyle={[3]\color{codeCyan}}]
 public interface NotifyOrderEvent {
 
     /**
@@ -231,7 +236,9 @@ Nel passo successivo si è passati a creare la prima classe adibita al compito d
 \begin{lstlisting}[style=myJava, 
     caption={Classe del producer kafka CucinaPubProducer.java}, label=lst:CucinaPubProducer, 
     emph={[2] kafkaTemplate , objectMapper, topic, payload, log },
-    emphstyle={[2]\color{codeDarkMagenta}}]
+    emphstyle={[2]\color{codeDarkMagenta}},
+    emph={[3] send },
+    emphstyle={[3]\color{codeCyan}}]
 @Service
 @Log
 public class CucinaPubProducer implements MessagePort<OrdineDTO> {
@@ -325,7 +332,9 @@ Fatto ciò si può procedere a scrivere la seguente classe di test (Codice \vref
 \begin{lstlisting}[style=myJava, 
     caption={Test di integrazione per il producer CucinaPubProducer}, label=lst:CucinaPubProducerTest, 
     emph={[2] kafkaTemplate , objectMapper, topic, payload, log, producer, embeddedKafka, logger, testAppender },
-    emphstyle={[2]\color{codeDarkMagenta}}]
+    emphstyle={[2]\color{codeDarkMagenta}},
+    emph={[3] setup, testSendingMessage },
+    emphstyle={[3]\color{codeCyan}}]
 @EnableKafka
 @SpringBootTest()
 @DirtiesContext
@@ -400,7 +409,9 @@ Poi si è passati direttamente ad implementare la classe SubClienteAdapter (Codi
 \begin{lstlisting}[style=myJava, 
     caption={Classe del consumer kafka SubClienteAdapter.java}, label=lst:subclienteadapter, 
     emph={[2] kafkaTemplate , objectMapper, topic, payload, log, producer, embeddedKafka, logger, testAppender, RECEIVED_TOPIC, RECEIVED_PARTITION, OFFSET, clientePort, lastMessageReceived, latch,  },
-    emphstyle={[2]\color{codeDarkMagenta}}]
+    emphstyle={[2]\color{codeDarkMagenta}},
+    emph={[3] receive, resetLatch, getLatch, getLastMessageReceived },
+    emphstyle={[3]\color{codeCyan}}]
 @Component
 @Log
 public class SubClienteAdapter implements NotifyOrderEvent {
@@ -469,10 +480,11 @@ spring.kafka.consumer.gestioneCliente.topic=test.topic.cliente
 \end{lstlisting}
 Poi in n modo analogo alla classe del producer viene creato il seguente test di integrazione (Codice \vref{lst:SubClienteAdapterTest}) sempre sfruttando Embedded Kafka:
 \begin{lstlisting}[style=myJava, 
-    caption={Test di integrazione per il consumer SubClienteAdapter}, label=lst:SubClienteAdapterTest, 
-   @Value("${spring.kafka.consumer.gestioneCliente.topic}")
-    emph={[2] kafkaTemplate , objectMapper, topic, payload, log, producer, embeddedKafka, logger, testAppender,  },
-    emphstyle={[2]\color{codeDarkMagenta}}]
+    caption={Test di integrazione per il consumer SubClienteAdapter}, label=lst:SubClienteAdapterTest,
+    emph={[2] kafkaTemplate , objectMapper, topic, payload, log, producer, embeddedKafka, logger, testAppender,},
+    emphstyle={[2]\color{codeDarkMagenta}},
+    emph={[3] setup, testOutput1 },
+    emphstyle={[3]\color{codeCyan}}]
 @EnableKafka
 @SpringBootTest
 @DirtiesContext
@@ -628,7 +640,9 @@ Grazie alla alla notazione @Entity segnaliamo a JPA che questa classe è un’en
 \paragraph{Step 4 - Repository:}
 Nello step 4 andiamo a definire una repository per la classe ordine, ossia un meccanismo per l’incapsulamento dello storage, recupero e comportamento di ricerca che emula una collezione di oggetti:
 \begin{lstlisting}[style=myJava, 
-    caption={Classe repository OrdineRepository.java}, label=lst:OrdineRepository]
+    caption={Classe repository OrdineRepository.java}, label=lst:OrdineRepository, 
+    emph={[3] findOrdineEntitiesByIdComanda },
+    emphstyle={[3]\color{codeCyan}}]
 @Repository
 public interface OrdineRepository extends CrudRepository<OrdineEntity, Integer> {
 
@@ -649,7 +663,9 @@ A questo punto siamo pronti per definire la classe adattatore di JPA JPADBAdapte
 \begin{lstlisting}[style=myJava, 
     caption={Classe adattatore JPA JPADBAdapter.java}, label=lst:JPADBAdapter, 
     emph={[2] ordineRepository, log, logger},
-    emphstyle={[2]\color{codeDarkMagenta}}]
+    emphstyle={[2]\color{codeDarkMagenta}},
+    emph={[3] JPADBAdapter, isOrderExist, saveOrder, getOrderById, updateOrder, findAllOrdersByIdComanda, deleteOrder },
+    emphstyle={[3]\color{codeCyan}},]
 @Repository
 public class JPADBAdapter implements DataPort {
 
@@ -722,7 +738,9 @@ A questo punto si può passare a creare il test di integrazione della DataPort (
 \begin{lstlisting}[style=myJava, 
     caption={Classe adattatore JPA JPADBAdapter.java}, label=lst:DataPortTest, 
     emph={[2] dataPort, log, logger, AFTER_EACH_TEST_METHOD},
-    emphstyle={[2]\color{codeDarkMagenta}}]
+    emphstyle={[2]\color{codeDarkMagenta}},
+    emph={[3] testSaveOrderAndFindOrderById, testMultipleSaveOrderAndFindByIdComanda, testOrderPartialUpdate, testDeleteOrder },
+    emphstyle={[3]\color{codeCyan}},]
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
