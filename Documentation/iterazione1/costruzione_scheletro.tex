@@ -1,6 +1,6 @@
 \section{Costruzione dello scheletro}
 
-\subsection{Organizzazione area di lavoro}
+\subsection{Organizzazione del processo di sviluppo}
 Per l’implementazione dei microservizi che compongono il sistema ServeEasy, attualmente delineato al primo zoom-in, è stato applicato un approccio “polyrepo"\cite{polyrepo}, definendo per ogni microservizio un’area di progetto dedicata. 
 
 Scelta GitHub come piattaforma di hosting per il progetto software, un membro del team è stato incaricato del setup, controllo e gestione delle repository per i singoli microservizi.
@@ -11,7 +11,7 @@ Nel processo di sviluppo sono state specificate delle regole mutualmente pattuit
 \begin{itemize}
     \item Nessuno esegue push diretto dall’area di lavoro locale verso il main branch: ognuno lavora esclusivamente sulla propria branch;
     \item Nei commit e nelle pull requests va espressa una sintesi del proprio lavoro svolto;
-Cambiamenti importanti vanno discussi;
+\item Cambiamenti importanti vanno discussi;
 \item Ogni implementazione va testata;
 \item Prima di effettuare una merge sul main branch, l’implementazione deve aver passato le fasi di build e di test con successo.
 \end{itemize}
@@ -19,7 +19,7 @@ Cambiamenti importanti vanno discussi;
 A supporto del processo di sviluppo, sono state introdotte automatizzazioni per garantire Continuous Integration e Continuous Delivery, servendosi di Github Workflows e Docker allo scopo di aumentare la velocità di deployment delle nuove modifiche apportate, garantendo al contempo integrità:
 \begin{itemize}
     \item Un evento di push verso il proprio branch causa l’avvio della job di CI posta a sorveglianza del proprio spazio di lavoro sulla repository, allo scopo di effettuare un controllo di compilazione;
-    \item Un evento verso il main branch (quale, ad esempio, una merge) causa l’avvio della job di CI/CD posta a sorveglianza del main sulla repository, la quale effettua un controllo di compilazione, genera un eseguibile e procede con lo shipping dell’applicazione, per mezzo di un Dockerfile, salvandola in remoto su registry DockerHub.
+    \item Un evento verso il main branch (quale, ad esempio, una merge) causa l’avvio della job di CI/CD posta a sorveglianza del main sulla repository, la quale effettua un controllo di compilazione, genera un eseguibile e procede con le fasi di build e ship dell'immagine Docker corrispondente verso il registry DockerHub \cite{DockerOverview}.
 \end{itemize}
 
 In particolare, nel punto 2 si parla di Continuous Delivery e non Continuous Deployment, in quanto il deployment della nuova immagine va eseguita manualmente \cite{CDDocker}.
@@ -35,6 +35,14 @@ Il deployment verrà effettuato tramite Docker Compose: vengono definiti in un u
  \label{fig:devopsit1}}
 \end{figure}
 
+
+\subsection{Organizzazione dell'area di lavoro}
+Oltre all'IDE di Intellij IDEA e Git, l'area di lavoro locale è supportata da Docker Compose per attivare i servizi a supporto dell'esecuzione del singolo microservizio: non solo dipendenze, quali Kafka, Zookeeper ed il database MariaDB, ma anche strumenti utili per la visualizzazione ed interazione ad alto livello col sistema, quali:
+\begin{itemize}
+    \item Kafdrop per monitorare i messaggi passati tra pub e sub attraverso Kafka;
+    \item PHPMyAdmin per monitorare, sviluppare ed iniettare dati nel database MariaDB.
+\end{itemize}
+Facendo leva sulla portabilità offerta dall'ambiente Docker, viene garantito un ambiente altamente personalizzabile, flessibile e di facile implementazione. 
 
 
 
