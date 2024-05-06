@@ -1,5 +1,41 @@
 \section{Costruzione dello scheletro}
-TODO: introduzione
+
+\subsection{Organizzazione area di lavoro}
+Per l’implementazione dei microservizi che compongono il sistema ServeEasy, attualmente delineato al primo zoom-in, è stato applicato un approccio “polyrepo"\cite{polyrepo}, definendo per ogni microservizio un’area di progetto dedicata. 
+
+Scelta GitHub come piattaforma di hosting per il progetto software, un membro del team è stato incaricato del setup, controllo e gestione delle repository per i singoli microservizi.
+
+Per raggiungere tale organizzazione, è stata prima di tutto creata un’area di lavoro per familiarizzare con le tecnologie selezionate, impiegando uno sforzo congiunto nello studio e prototipazione.
+
+Nel processo di sviluppo sono state specificate delle regole mutualmente pattuite:
+\begin{itemize}
+    \item Nessuno esegue push diretto dall’area di lavoro locale verso il main branch: ognuno lavora esclusivamente sulla propria branch;
+    \item Nei commit e nelle pull requests va espressa una sintesi del proprio lavoro svolto;
+Cambiamenti importanti vanno discussi;
+\item Ogni implementazione va testata;
+\item Prima di effettuare una merge sul main branch, l’implementazione deve aver passato le fasi di build e di test con successo.
+\end{itemize}
+
+A supporto del processo di sviluppo, sono state introdotte automatizzazioni per garantire Continuous Integration e Continuous Delivery, servendosi di Github Workflows e Docker allo scopo di aumentare la velocità di deployment delle nuove modifiche apportate, garantendo al contempo integrità:
+\begin{itemize}
+    \item Un evento di push verso il proprio branch causa l’avvio della job di CI posta a sorveglianza del proprio spazio di lavoro sulla repository, allo scopo di effettuare un controllo di compilazione;
+    \item Un evento verso il main branch (quale, ad esempio, una merge) causa l’avvio della job di CI/CD posta a sorveglianza del main sulla repository, la quale effettua un controllo di compilazione, genera un eseguibile e procede con lo shipping dell’applicazione, per mezzo di un Dockerfile, salvandola in remoto su registry DockerHub.
+\end{itemize}
+
+In particolare, nel punto 2 si parla di Continuous Delivery e non Continuous Deployment, in quanto il deployment della nuova immagine va eseguita manualmente \cite{CDDocker}.
+
+Il deployment verrà effettuato tramite Docker Compose: vengono definiti in un unico file i servizi offerti dal registry di riferimento (Dockerhub), le loro caratteristiche e dipendenze, cosicchè sarà sufficiente avviare il file per poter scaricare le immagini dei microservizi e servizi d’interesse in una rete di container dedicata.
+
+
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.36]{iterazione1/images/DevOps.jpg}
+	\caption{Organizzazione del lavoro cloud e locale, CI/CD e deployment 
+ \label{fig:devopsit1}}
+\end{figure}
+
+
 
 
 \subsection{Definizione Interfacce}
