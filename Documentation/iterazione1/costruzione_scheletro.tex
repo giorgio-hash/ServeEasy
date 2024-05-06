@@ -1,4 +1,6 @@
 \section{Costruzione dello scheletro}
+Vista la necessità di standardizzarsi sulle tecnologie e modalità in uso, la costruzione stessa dello scheletro 
+ha seguito un approccio incrementale: si è iniziato da un microservizio, \textit{GestioneComanda}, per poi proseguire con \textit{GestioneCliente} e \textit{GestioneCucina}.
 
 \subsection{Organizzazione del processo di sviluppo}
 Per l’implementazione dei microservizi che compongono il sistema ServeEasy, attualmente delineato al primo zoom-in, è stato applicato un approccio “polyrepo"\cite{polyrepo}, definendo per ogni microservizio un’area di progetto dedicata. 
@@ -42,8 +44,21 @@ Oltre all'IDE di Intellij IDEA e Git, l'area di lavoro locale è supportata da D
     \item Kafdrop per monitorare i messaggi passati tra pub e sub attraverso Kafka;
     \item PHPMyAdmin per monitorare, sviluppare ed iniettare dati nel database MariaDB.
 \end{itemize}
-Facendo leva sulla portabilità offerta dall'ambiente Docker, viene garantito un ambiente altamente personalizzabile, flessibile e di facile implementazione. 
+Facendo leva sulla portabilità offerta dal framework Docker, viene garantito un ambiente altamente personalizzabile, flessibile e di facile implementazione. 
 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.36]{iterazione1/images/IDEIDEA.jpg}
+	\caption{Ambiente di lavoro con Intellij IDEA e Docker Compose
+ \label{fig:IDEAit1}}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.36]{iterazione1/images/phpmyadmin.jpg}
+	\caption{interfaccia grafica di PHPMyAdmin eseguito da container
+ \label{fig:devopsit1}}
+\end{figure}
 
 
 \subsection{Definizione Interfacce}
