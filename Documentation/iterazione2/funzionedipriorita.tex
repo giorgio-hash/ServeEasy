@@ -1,0 +1,99 @@
+\section{Funzione di priorità}
+La funzione di priorità è una funzione matematica che assegna un valore numerico decimale di priorità nell’intervallo tra 0 e 1 basandosi sui parametri specifici di ogni ordine.
+Il primo passo consiste nel processo di normalizzazione dei parametri, il quale permette di standardizzare i valori in modo che siano compresi tra 0 e 1. in maniera tale da mettere i diversi parametri su una scala comune e uniforme
+
+\subsection{Parametri}
+
+\paragraph{x1 ingrediente principale:}
+Indica il valore di priorità che presenta l'ingrediente predominante dell’ordine, questo valore è influenzato direttamente dallo stato della postazione di lavoro associata in cucina attraverso il grado di riempimento della coda di postazione.
+\begin{itemize}
+	\item se la cucina è satura ridurre il valore di x1 (min 0)
+	\item se la cucina è scarica aumentare il valore di x1(max 1)
+\end{itemize}
+
+\paragraph{x2 tempo di preparazione:}
+Rappresenta la durata stimata necessaria per preparare un determinato ordine.
+\begin{itemize}
+	\item normalizzazione: \begin{equation*}
+		\text{tp}_{\text{norm}} = \frac{\text{tp} - \text{tp}_{\text{min}}}{\text{tp}_{\text{max}} - \text{tp}_{\text{min}}}
+	\end{equation*} con tp: tempo di preparazione,\\
+	$\text{tp}_{\text{max}}: \text{tempo di preparazione massimo,}$\\
+	$\text{tp}_{\text{min}}: \text{tempo di preparazione minimo;}$
+	\item $\text{considerare x2 = tp}_{\text{norm}} \text{ per prioritizzare ordini più lunghi,}\\ \text{oppure x2 = 1-tp}_{\text{norm}} \text{ per prioritizzare ordini più brevi.}$
+\end{itemize}
+
+\paragraph{x3 urgenza del cliente:}
+Consente ai clienti di specificare la tempestività con cui desiderano ricevere il proprio ordine, in particolare i clienti possono chiedere espressamente di avere urgenza, al contrario possono non dire nulla e tenere un valore di urgenza di default.
+\begin{itemize}
+	\item 1 se il cliente ha espresso urgenza;
+	\item 0 se il cliente non ha espresso alcuna urgenza - \textit{parametro di default}.
+\end{itemize}
+
+\paragraph{x4 numero ordine effettuato:}
+Specifica il numero dell’ordine del cliente in ordine temporale, in particolare indica la posizione relativa di un ordine all'interno della sequenza di ordini effettuati da egli stesso.
+\begin{itemize}
+	\item il primo ordine effettuato ha priorità maggiore, mentre i successivi hanno priorità decrescente;
+	\item normalizzazione: \begin{equation*}
+		\text{x4} = \frac{\text{noe} - 1}{\text{max}_{\text{noe}} - 1}
+	\end{equation*} con noe: numero ordini effettuati,\\
+	$\text{max}_{\text{noe}} \text{: massimo numero ordini effettuabili;}$
+	\item considerare un valore massimo di ordini (es.5 gli ordini dopo il quinto sono comunque consentiti e prenderanno la stessa priorità del 5° ordine).
+\end{itemize}
+
+\paragraph{x5 tempo in attesa:}
+Rappresenta il periodo di tempo trascorso da quando un ordine è stato effettuato fino al momento in cui viene elaborato.
+\begin{itemize}
+	\item normalizzazione: \begin{equation*}
+		\text{x5} = \frac{\text{tempo in attesa}}{\text{tempo max in attesa}}
+	\end{equation*}
+	\item considerare un valore massimo di tempo in attesa consentito, in prossimità del quale si ha la priorità più elevata.
+\end{itemize}
+
+\subsection{Pesi}
+I pesi sono utilizzati per attribuire un grado di importanza relativo a ciascun parametro all'interno della funzione di priorità. Questi pesi indicano quanto ciascun parametro dovrebbe influenzare il calcolo complessivo della priorità di un determinato elemento.
+Si elencano di seguito i pesi per ciascun parametro definito poc’anzi:
+\begin{itemize}
+	\item p1: peso ingrediente principale;
+	\item p2: peso tempo di preparazione;
+	\item p3: peso urgenza cliente;
+	\item p4: peso numero ordine;
+	\item p5: peso tempo in attesa.
+\end{itemize}
+
+Viene quindi fatto un ragionamento sull’importanza da attribuire a ogni parametro tramite l’incidenza assegnata al singolo peso. Si dividono quindi i pesi in tre categorie.
+
+\paragraph{Maggiore incidenza} I pesi che devono essere più incidenti sono:
+\begin{itemize}
+	\item p1 peso ingrediente principale: per evitare di sovraccaricare una postazione rispetto alle altre o per non avere postazioni vuote;
+	\item p5 peso tempo in attesa: un ordine non può restare in attesa troppo a lungo.
+\end{itemize}
+
+\paragraph{Incidenza media} Il peso con incidenza media è:
+\begin{itemize}
+	\item p3 peso urgenza del cliente: è meno importante dei vincoli di sovraccarico e attesa, ma deve essere comunque una scelta significativa.
+\end{itemize}
+
+\paragraph{Bassa incidenza} I pesi con bassa incidenza sulla priorità sono:
+\begin{itemize}
+	\item p2 peso tempo di preparazione: in confronto ad altri parametri con pesi più elevati, questo è considerato meno critico;
+	\item p4 peso numero ordine effettuato: ha un impatto di poco conto sulla priorità dell’ordine.
+\end{itemize}
+
+\subsubsection{Valore dei pesi}
+I valori dei pesi vengono quindi definiti inizialmente:
+\begin{itemize}
+	\item p1 = 0.25;
+	\item p2 = 0.15;
+	\item p3 = 0.20;
+	\item p4 = 0.15;
+	\item p5 = 0.25.
+\end{itemize}
+\paragraph{Prospettive Future} Questi valori possono essere regolati col tempo per aumentare l’efficienza dell’algoritmo, diventa così importante raccogliere dati storici per poterli analizzare e comprendere come i vari parametri influenzano le prestazioni del sistema, oltre a raccogliere feedback dei clienti, sulla base di ciò sarà richiesto un tuning dei pesi più accurato, ad esempio tramite un modello di machine learning. Per questo motivo è richiesta una certa flessibilità in modo da consentire l'aggiornamento dei pesi dei parametri in modo dinamico.
+
+\subsection{Funzione matematica}
+L'equazione proposta rappresenta una somma pesata dei parametri, dove ciascun parametro (x1, x2, x3, x4, x5) viene moltiplicato per il suo relativo peso (p1, p2, p3, p4, p5). I pesi indicano l'importanza relativa dei parametri nel determinare la priorità complessiva di un elemento. La somma pesata dei parametri produce un valore (y) compreso tra 0 e 1, dove 0 indica un valore meno urgente e 1 indica un valore più urgente.
+\begin{equation*}
+	\text{y} = \text{p1}*{\text{x1}} + \text{p2}*{\text{x2}}  + \text{p3}*{\text{x3}}  + \text{p4}*{\text{x4}}  + \text{p5}*{\text{x5}}
+\end{equation*}
+
+\clearpage

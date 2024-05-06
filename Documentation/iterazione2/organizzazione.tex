@@ -1,0 +1,29 @@
+\section{Organizzazione}
+Di seguito viene illustrata l’organizzazione delle entità coinvolte nella gestione dell’algoritmo:
+\subsection{Ordine}
+Ogni ordine contiene un singolo piatto del menù, viene classificato per ingrediente principale univoco (es. riso, pasta, pesce, …), ogni ordine presenta poi più parametri, questi contribuiscono a calcolare la priorità ad esso associata.
+Parametri ordine:
+\begin{itemize}
+	\item Ingrediente principale;
+	\item Tempo di preparazione;
+	\item Numero ordine effettuato (primo, secondo, …);
+	\item Urgenza del cliente;
+	\item Tempo in attesa.
+\end{itemize}
+
+\subsection{Cucina}
+La cucina viene organizzata in postazioni di lavoro, ossia delle aree dedicate organizzate per svolgere specifiche attività culinarie adibite alla preparazione di piatti che hanno in comune il medesimo ingrediente principale, nello specifico:
+\begin{itemize}
+	\item ogni postazione di lavoro è adibita al massimo a 1 ingrediente principale;
+\end{itemize}
+
+\subsection{Postazione}
+Con postazione si intende uno spazio di lavoro attrezzato con gli strumenti necessari per lavorare con un particolare tipo di ingrediente principale. Una singola postazione presenta una struttura dati per gestire gli ordini in coda di preparazione.
+\begin{itemize}
+	\item 1 ingrediente principale;
+	\item 1 struttura dati (coda);
+	\item capacità massima;
+	\item grado di riempimento.
+\end{itemize}
+
+\clearpage
