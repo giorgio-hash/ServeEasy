@@ -65,12 +65,13 @@ Facendo leva sulla portabilità offerta dal framework Docker, viene garantito un
 Utilizzando PHPMyAdmin, è stata semplificata la creazione ed esportazione del database. Realizzato lo schema dati, la funzione "Esporta" lo salva in un file \texttt{.sql} 
 pronto per l'uso. Assieme allo schema, sono stati inoltre definiti ed esportati dei dati di prova su cui operare.
 
-
-
-
-
 \subsection{Definizione Interfacce}
 % nota: metterei solo quelle di gestione comanda oppure quelle che ci servono per spiegare
+Prima di tutto, sono state scritte le interfacce necessarie per la comunicazione verso i componenti del sistema. 
+In particolare, il design delle interfacce Port risulta cruciale per adottare correttamente il principio d'inversione delle dipendenze: 
+il dominio deve poter ignorare la natura dei device di input, mentre deve comunicare coi dispositivi di output solo attraverso le interfacce Port.
+In altre parole, si assuma che l'informazione esterna arrivi al layer Interface, venga inoltrata al dominio e poi dal dominio verso Infrastructure, per poi andare ai dispositivi di output:
+il principio d'inversione delle dipendenze vuole che il dominio dipenda da Interface e che Infrastructure dipenda dal dominio, mentre non è concesso il viceversa\cite{PortAdapterPattern}. 
 \begin{lstlisting}[style=myJava, 
     caption={Interfaccia MessagePort}, label=lst:messageport, emph={[3] send},
     emphstyle={[3]\color{codeCyan}}]
@@ -172,7 +173,7 @@ public interface NotifyOrderEvent {
 %TODO: ho aggiunto solo quelle che mi servono per poter avere il riferimento
 
 \subsection{Adattatore Kafka}
-Lo sviluppo del componente adibito all'adattatore Kafa è stato un processo che ha seguito vari step:
+Lo sviluppo del componente adibito all'adattatore Kafka è stato un processo che ha seguito vari step:
 \paragraph{Step 1 - Overview:}
 Come primo passo ci si è fatti una panoramica leggendo la documentazione ufficiale di Spring Kafka \cite{SpringKafka} e si sono cercati alcuni progetti su Github di \href{https://github.com/devtiro/spring-boot-kafka-tutorial/tree/main}{esempio}.
 \paragraph{Step 2 - Setup:}
@@ -853,7 +854,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    if: github.ref != 'refs/heads/main'
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -882,6 +883,55 @@ Dalla Figura \vref{fig:cigithubmerge} è possibile notare come all'interno della
     \label{fig:cigithubmain}
 \end{figure}
 Una volta completato il merge con successo è possibile notare una spunta verde nella repository principale del progetto (Figura \vref{fig:cigithubmain}) che ci informa che allo stato corrente il codice sul main ha passato tutti i test proposti.
+
+\subsection{Continuous Delivery}
+Applicando modifiche al maven.yml precedentemente definito, è stata aggiunta una job che, a seguito della fase CI di cui sopra, crei l'immagine Docker contenente l'eseguibile .jar, destinata alla registry Dockerhub.
+Al fine di non eseguire molteplici jobs, sono state introdotte delle condizioni affinchè Github Actions capisca quali job eseguire e quali saltare, specificando così l'esecuzione di una job di CI/CD per gli eventi che interessano il branch main, mentre gli altri branch eseguono solo una job di CI. 
+
+La nuova job introdotta sfrutta il Dockerfile definito all'interno del progetto per creare l'immagine da spedire verso la repository definita dalle credenziali salvate dall'amministratore di repository. Tali segreti sono conservati nella repository al percorso \texttt{Settings > Security > Secrets and Variables > Actions > Environment Secrets}.
+\begin{lstlisting}[language=yaml, caption={modifiche file maven.yml per CI/CD}, label=lst:maven-yml-CICD]
+[...]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+        
+    if: github.ref != 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    [...]
+
+  build-and-ship:
+    runs-on: ubuntu-latest
+      
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Run the Maven verify phase
+      run: mvn --batch-mode clean verify
+    - name: Build & push docker image
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: gchirico1/gestione_comanda
+        tags: latest
+        registry: docker.io
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Dockerfile , caption={Dockerfile di GestioneComanda}, label=lst:dockerfile]
+FROM openjdk:latest
+COPY target/GestioneComanda-0.0.1-SNAPSHOT.jar GestioneComanda-0.0.1-SNAPSHOT.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","GestioneComanda-0.0.1-SNAPSHOT.jar"]
+\end{lstlisting}
 
 \subsection{DTO}
 Gli oggetti di trasferimento dati (Data Transfer Object) sono un design pattern utilizzato per trasferire dati tra sottosistemi di un’applicazione software, servono a semplificare e a rendere più efficiente la comunicazione tra i vari livelli di un'applicazione, nel nostro caso tra Interface, Domain e Infrastructure.

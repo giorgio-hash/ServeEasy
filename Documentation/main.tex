@@ -112,7 +112,7 @@
 % Definizione del linguaggio YAML
 \lstdefinelanguage{yaml}{
     keywords={true,false,null,y,n,
-    spring, kafka, bootstrap, servers , producer, topic, group,id, consumer, auto, offset, reset, jpa, properties, hibernate, dialect, temp, use_jdbc_metadata_defaults, ddl, show, sql, datasource, url, username, password, driver, class, name, on, push, branches, pull_request, jobs, build, runs, if, steps, uses, with, java, version, distribution, cache, run},
+    spring, kafka, bootstrap, servers , producer, topic, group,id, consumer, auto, offset, reset, jpa, properties, hibernate, dialect, temp, use_jdbc_metadata_defaults, ddl, show, sql, datasource, url, username, password, driver, class, name, on, push, branches, pull_request, jobs, build,build-and-ship, image, tags, registry, dockerfile, runs, if, steps, uses, with, java, version, distribution, cache, run},
     keywordstyle=\color{codeMediumDarkblue}\bfseries,
     sensitive=true,
     comment=[l]{\#},
@@ -190,6 +190,21 @@
 \lstset{moredelim=[is][\color{codeNaturalColorSystem}]{|*}{*|}}
 \lstset{moredelim=[is][\color{codeNumberColor}]{?*}{*?}}
 \lstset{moredelim=[is][\color{black}]{!*}{*!}}
+
+%colori personalizzati per Docker
+\lstdefinelanguage{Dockerfile}{
+  keywords={FROM, RUN, CMD, LABEL, MAINTAINER, EXPOSE, ENV, ADD, COPY, ENTRYPOINT, VOLUME, USER, WORKDIR, ARG, ONBUILD, STOPSIGNAL, HEALTHCHECK, SHELL},
+  keywordstyle=\color{red}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{\#},
+  commentstyle=\color{green}\ttfamily,
+  stringstyle=\color{blue}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+
 % Collegamenti ipertestuali e al Web
 \usepackage[colorlinks]{hyperref} % sempre per ultimo
 \hypersetup{
