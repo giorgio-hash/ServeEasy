@@ -25,6 +25,9 @@
 \fancyhead[LO,RE]{\slshape \leftmark}
 %headheight
 \setlength{\headheight}{14.49998pt}
+%pacchetti per inserire pseudocodice iterazione 2
+\usepackage{algorithm}
+\usepackage[]{algpseudocode}
 % Pagine bianche senza intestazione
 \makeatletter
 \def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
@@ -207,7 +210,7 @@
 	\tableofcontents	% indice generale
 	\listoffigures		% indice delle figure
 	\lstlistoflistings  %indice del codice
-	%	\addcontentsline{toc}{chapter}{Elenco dei codici}
+	\addcontentsline{toc}{chapter}{Elenco dei codici}
 	\chapter{Iterazione 0}
 	\input{iterazione0/introduzione}
 	\input{iterazione0/requisiti_funzionali}
@@ -223,7 +226,12 @@
     \input{iterazione1/costruzione_scheletro}
     \input{iterazione1/api}
     \chapter{Iterazione 2}
-	\input{iterazione2/algoritmo}
+    \input{iterazione2/introduzione}
+    \input{iterazione2/organizzazione}
+    \input{iterazione2/funzionedipriorita}
+	\input{iterazione2/pseudocodice}
+	\input{iterazione2/strutturadati}
+	\input{iterazione2/diagrammadiflusso}
     \nocite{*}
     \printbibliography
 	\backmatter	

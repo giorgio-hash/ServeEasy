@@ -1,0 +1,235 @@
+\section{Pseudocodice}
+
+\paragraph{Entità:}
+I dati utilizzati da questa parte di algoritmo sono elencati nella seguente per avere una miglior lettura degli pseudocodici.
+\begin{itemize}
+	\item OrdinePQ (idOrdine, idComanda, timestamp, stato, urgenzaCliente, valorePriorita, ingredientePrincipale, tpDiPreparazione, numOrdineEffettuato);
+	\item CodaPostazione (ingredientePrincipale, lunghezza, gradoDiRiempimento, tpDiPreparazione).
+\end{itemize}
+
+Di seguito vengono ora riportati gli pseudocodici suddivisi in funzioni per una migliore lettura.
+
+\subsection{Assegna valore di priorità:}
+Questo pseudocodice rappresenta la parte principale, esso definisce pesi e assegna parametri portando al calcolo dell'effettivo \textbf{ValorePriorita} assegnato ad ogni ordine.
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Algoritmo che assegna un valore di priorità ad un ordine dato in input in base a pesi fissi e al valore dei parametri calcolato per mezzo di sottofunzioni e assegna o aggiorna questo ordine in una coda a priorità}
+		\Procedure{AssegnaPriorita}{\text{ordinePQ, priorityQueue}}
+		\Comment{Calcola il ValorePriorità dell'ordine.}
+		\medskip
+
+		\State $p1 \gets 0.25$
+		\State $p2 \gets 0.15$
+		\State $p3 \gets 0.20$
+		\State $p4 \gets 0.15$
+		\State $p5 \gets 0.25$
+		\medskip
+
+		\State $x1 \gets \text{CalcolaIngredientePrincipale}(\text{ordinePQ.ingredientePrincipale})$
+		\State $x2 \gets \text{CalcolaTempoDiPreparazione}(\text{ordinePQ.tpDiPreparazione})$
+		\State $x3 \gets \text{CalcolaUrgenzaDelCliente}(\text{ordinePQ.urgenzaCliente})$
+		\State $x4 \gets \text{CalcolaNumeroOrdineEffettuato(\text{ordinePQ.numOrdineEffettuato})}$
+		\State $x5 \gets \text{CalcolaTempoDiAttesa}(\text{ordinePQ.timestamp})$
+		\medskip
+		\State $\text{valorePriorita} \gets (p1 \cdot x1) + (p2 \cdot x2) + (p3 \cdot x3) + (p4 \cdot x4) + (p5 \cdot x5)$
+		\State $\text{ordinePQ.valorePriorita} \gets \text{valorePriorita}$
+		\medskip
+		\If {$\text{ordinePQ is in priorityQueue}$}
+		\State $\text{priorityQueue.update(valorePriorita, ordinePQ)}$
+		\Else
+		\State $\text{priorityQueue.add(valorePriorita, ordinePQ)}$
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Costo temporale:}
+Il costo temporale di un algoritmo è una misura del tempo di esecuzione in funzione della dimensione dell’input. In questo algoritmo, il costo temporale dipende principalmente dalle funzioni \textbf{CalcolaIngredientePrincipale, CalcolaTempoDiPreparazione, CalcolaUrgenzaDelCliente, CalcolaNumeroOrdineEffettuato, CalcolaTempoDiAttesa} e dall’operazione \textbf{add} oppure \textbf{update} sulla \textbf{PriorityQueue}.
+
+\paragraph{Costo spaziale:}
+Il costo spaziale di un algoritmo è una misura dello spazio di memoria utilizzato in funzione della dimensione dell’input.Il costo spaziale di questo algoritmo dipende principalmente dalla dimensione della \textbf{PriorityQueue} e dalle variabili utilizzate.
+
+\subsection{Funzione di aggiornamento:}
+Essendo il sistema del ristorante basato su parametri costantemente aggiornati (nuovi ordini, intervalli temporali, cambio esigenze) avremo bisogno di verificare periodicamente il valore del \textbf{ValorePriorità} assegnato ad ogni ordine.\\
+Anche in questo caso avremo una complessità temporale e spaziale che si basa sul numero di ordini da andare a gestire, all'interno della \textbf{PriorityQueue}.
+
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Funzione di aggiornamento che permette di richiamare la funzione assegna priorità}
+		\Procedure{FunzioneAggiornamento}{\text{priorityQueue}}
+		\ForAll{ordine in priorityQueue}
+		\State assegnaPriorità(ordine, priorityQueue)
+		\EndFor
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{x1 ingrediente principale:}
+Il  parametro x1 permette di verificare quanto la coda di preparazione dell'ingrediente principale richiesto dal cliente sia piena.
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Funzione che calcola il parametro x1 riferito all'ingrediente principale}
+		\Function{CalcolaIngredientePrincipale}{\text{ingredientePrincipale}}
+		\medskip
+		\State $\text{x1} \gets \text{parametro ingrediente principale}$
+		\medskip
+		\State $\text{codaPostazione} \gets \text{findCodaPostazione(ingredientePrincipale)}$
+		\State $x1 \gets {\text{codaPostazione.gradoDiRiempimento}}$
+		\State \textbf{return} $ 1 - x1$
+		\Comment{0: se coda satura, 1: se coda scarica}
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Costo temporale:}
+si riferisce al tempo di esecuzione dell’algoritmo. in questo algoritmo non abbiamo particolari costi da verificare, l'unica operazione rilevante sarà la ricerca delle cada postazione che però possiamo supporre  ad accesso direttto e quindi avrà costo unitario \textbf{O(1)}.
+
+\paragraph{Costo spaziale:}
+lo spazio di memoria utilizzato dall’algoritmo valuta le variabili che stiamo memorizzando sono \textbf{x1}, \textbf{ingredientePrincipale} e \textbf{codaPostazione} , quindi il costo spaziale è costante, ovvero \textbf{O(1)}.
+
+\subsection{x2 tempo di preparazione:}
+Il  parametro x2 permette di dare maggior priorità agli ordini che hanno un tempo maggiore\ minore di preparazione.
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Funzione che calcola il parametro x2 riferito al tempo di preparazione }
+		\Function{CalcolaTempoDiPreparazione}{\text{tpDiPreparazione}}
+		\medskip
+		\State $\text{x2} \gets \text{Parametro tempo di preparazione}$
+		\State $\text{tpMax} \gets \text{massimo tempo di preparazione fra gli ordini effettuati}$
+		\State $\text{tpMin} \gets \text{minimo tempo di preparazione fra gli ordini effettuati}$
+		\medskip
+		\If{$\text{tpDiPreparazione} \leq \text{tpMax}$}
+		\State $x2 \gets \frac{\text{tpDiPreparazione} - \text{tpMax}}{\text{tpMax} - \text{tpMin}}$ \Comment{Normalizzazione}
+		\Else
+		\State $x2 \gets 1$
+		\EndIf
+		
+		\State \textbf{return} $x2$ \Comment{Possibile variazione: \textit{return 1 -x2}}
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Costo temporale:}
+L'istruzione condizionale dipende solo dall'input \textbf{tpDiPreparazione} e dai valori di \textbf{tpMax} e \textbf{tpMin}, che si assume siano già stati calcolati. Quindi, la complessità temporale è \textbf{O(1)}, il che significa che l'algoritmo richiede un tempo costante per essere eseguito.
+
+\paragraph{Costo spaziale:}
+L'algoritmo non utilizza strutture dati che crescono con la dimensione dell'input, come ad esempio array o liste. Quindi, la complessità spaziale è \textbf{O(1)}, il che significa che l'algoritmo utilizza una quantità costante di memoria.
+
+\subsection{x3 urgenza del cliente:}
+Il  parametro x3 permette, attraverso la scelta del cliente, il grado di urgenza col quale egli vuol essere servito.
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Funzione che calcola il parametro x3 riferito all'urgenza del cliente}
+		\Function{CalcolaUrgenzaDelCliente}{\text{urgenzaCliente}}
+		\medskip
+		\State $\text{x3} \gets \text{Parametro urgenza cliente}$
+		\medskip
+		\If{$\text{urgenzaCliente} = false$}
+		\State $x3 \gets 0$  \Comment{Nessuna urgenza}
+		\ElsIf{$\text{urgenzaCliente} = true$}
+		\State $x3 \gets 1$  \Comment{Urgenza}
+		\EndIf
+		
+		\State \textbf{return} $x3$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Costo temporale:}
+La complessità temporale di questo pseudocodice è \textbf{O(1)}, poiché esegue un numero costante di operazioni.
+
+\paragraph{Costo spaziale:}
+La complessità spaziale di questo pseudocodice è \textbf{O(1)}, poiché utilizza un numero costante di variabili. Inoltre, lo pseudocodice non utilizza strutture dati che crescono con la dimensione dell'input, quindi la complessità spaziale è costante.
+
+\subsection{x4 numero ordine effettuato:}
+Il  parametro x4 permette di dare maggior priorità a chi ha più ordini in attesa di preparazione. Il valore sogliaMax rappresenta il valore massimo di ordini oltre il quale la priorità minima.
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Funzione che calcola il parametro x4 riferito al numero ordine effettuat}
+		\Function{CalcolaNumeroOrdineEffettuato}{\text{numOrdineEffettuato}}
+		\medskip
+		\State $\text{x4} \gets \text{parametro numero ordine effettuato (0 minima, 1 massima)}$
+		\State $\text{sogliaMax} \gets \text{soglia massima ordini}$
+		\medskip
+		\If{$\text{numOrdineEffettuato} < \text{sogliaMax}$}
+		\State $x4 \gets \frac{\text{numOrdineEffettuato} - 1}{\text{sogliaMax - 1}}$ \Comment{Normalizzazione}
+		\Else
+		\State $x4 \gets 1$ \Comment{se supero il massimo di ordini imposto}
+		\EndIf
+		\State \textbf{return} $1 - x4$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Costo temporale:}
+La complessità temporale di questo pseudocodice è \textbf{O(1)}, poiché esegue un numero costante di operazioni.
+
+\paragraph{Costo spaziale:}
+La complessità spaziale di questo pseudocodice è \textbf{O(1)}, poiché utilizza un numero costante di variabili. Inoltre, lo pseudocodice non utilizza strutture dati che crescono con la dimensione dell'input, quindi la complessità spaziale è costante. In generale, lo pseudocodice è efficiente e non presenta problemi di complessità temporale o spaziale.
+
+\subsection{x5 tempo in attesa:}
+Il  parametro x5 permette di verificare quanto tempo è passato dall'ordinazione del cliente, dando maggior priorità a chi ha atteso maggiormente dall'invio dell'ordine.
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Funzione che calcola il parametro x5 riferito al tempo di attesa del cliente}
+		\Function{CalcolaTempoDiAttesa}{\text{timestamp}}
+		\medskip
+		\State $\text{x5} \gets \text{Parametro tempo di attesa}$
+		\State $\text{tpMaxDiAttesa} \gets \text{valore massimo di attesa scelto apriori}$
+		\State $\text{tpAttuale} \gets \text{ t rappresenta l'istante di tempo attuale}$
+		\State $t \gets \text{tpAttuale} - \text{timestamp}$  \Comment{Tempo trascorso}
+		\medskip
+		
+		\If{$t = 0$}
+		\State $x5 \gets 0$  \Comment{Evita divisione per zero}
+		\ElsIf{$t \leq \text{tpMaxDiAttesa}$}
+		\State $x5 \gets \frac{t}{\text{tpMaxDiAttesa}}$
+		\Else
+		\State $x5 \gets 1$ \Comment{Troppo tempo atteso, priorità massima}
+		\EndIf
+		
+		\State \textbf{return} $x5$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Costo temporale:}
+La complessità temporale di questo pseudocodice è \textbf{O(1)}, poiché esegue un numero costante di operazioni.
+
+\paragraph{Costo spaziale:}
+La complessità spaziale è \textbf{O(1)}, poiché utilizza un numero costante di variabili.
+
+\subsection{Gestore Code:}
+Dopo aver assegnato una priorità a ciascun ordine, sarà possibile organizzare gli ordini effettuati utilizzando la nostra \textbf{PriorityQueue}. Una volta completata questa procedura, gestiremo l'inserimento all'interno delle M code di preparazione. Questo processo è stato organizzato in modo tale da evitare un eccessivo afflusso di ordini all'interno delle code di preparazione, prevenendo la saturazione, per questo è stato pensato in parametro \textbf{C} che potrà essere gestito così da non distribuire contemporaneamente tutti gli ordini.
+
+\begin{algorithm}[h]
+	\begin{algorithmic}[h!]
+		\caption{Funzione che inserisce ordini in codaPostazione solo se essa non è troppo piena e se il numero totale di ordini in cucina non supera una determinata soglia}
+		\Procedure{InserimentoCodaPostazione}{\text{ordinePQ}}
+		\If{$\text{codaPostazione.isFull()} = \text{false} \land \text{numeroOrdiniTotaliInCucina()} < \text{C}$}
+		\State $\text{codaPostazione.add(OrdinePQ)}$
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Costo temporale:}
+La complessità temporale di questo pseudocodice è \textbf{O(1)}.
+
+\paragraph{Costo spaziale:}
+La complessità spaziale è \textbf{O(1)}.
+
+\paragraph{TODO:}
+
+Questione dei più cuochi\\
+23 chiedi -
+26  chiedi -
+32  chiedi -
+35  chiedi -\\
+47 img fatto -
+212 img -\\
+353 -\\
+382 -\\
+415 Gestione code --prova
+
+\clearpage
