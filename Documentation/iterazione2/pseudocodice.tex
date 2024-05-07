@@ -75,7 +75,8 @@ Il  parametro x1 permette di verificare quanto la coda di preparazione dell'ingr
 		\medskip
 		\State $\text{codaPostazione} \gets \text{findCodaPostazione(ingredientePrincipale)}$
 		\State $x1 \gets {\text{codaPostazione.gradoDiRiempimento}}$
-		\State \textbf{return} $x1$
+		\State \textbf{return} $ 1 - x1$
+		\Comment{0: se coda satura, 1: se coda scarica}
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
@@ -140,22 +141,22 @@ La complessità temporale di questo pseudocodice è \textbf{O(1)}, poiché esegu
 \paragraph{Costo spaziale:}
 La complessità spaziale di questo pseudocodice è \textbf{O(1)}, poiché utilizza un numero costante di variabili. Inoltre, lo pseudocodice non utilizza strutture dati che crescono con la dimensione dell'input, quindi la complessità spaziale è costante.
 
-\subsection{x4 numero ordine effettuato: AAAAAAAAAAAAAAAAAAAA}
-Il  parametro x4 permette di dare maggior priorità a chi ha più ordini in attesa di preparazione.
+\subsection{x4 numero ordine effettuato:}
+Il  parametro x4 permette di dare maggior priorità a chi ha più ordini in attesa di preparazione. Il valore sogliaMax rappresenta il valore massimo di ordini oltre il quale la priorità minima.
 \begin{algorithm}[h]
 	\begin{algorithmic}[h!]
 		\caption{Funzione che calcola il parametro x4 riferito al numero ordine effettuat}
 		\Function{CalcolaNumeroOrdineEffettuato}{\text{numOrdineEffettuato}}
 		\medskip
 		\State $\text{x4} \gets \text{parametro numero ordine effettuato (0 minima, 1 massima)}$
-		\State $\text{maxNumOrdineEffettuato} \gets \text{numero massimo di ordini effettuabili}$
+		\State $\text{sogliaMax} \gets \text{soglia massima ordini}$
 		\medskip
-		\If{$\text{numOrdineEffettuato} < \text{maxNumOrdineEffettuato}$}
-		\State $x4 \gets \frac{\text{numOrdineEffettuato} - 1}{\text{maxNumOrdineEffettuato} - 1}$ \Comment{Normalizzazione}
+		\If{$\text{numOrdineEffettuato} < \text{sogliaMax}$}
+		\State $x4 \gets \frac{\text{numOrdineEffettuato} - 1}{\text{sogliaMax - 1}}$ \Comment{Normalizzazione}
 		\Else
 		\State $x4 \gets 1$ \Comment{se supero il massimo di ordini imposto}
 		\EndIf
-		\State \textbf{return} $x4$
+		\State \textbf{return} $1 - x4$
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
@@ -205,7 +206,7 @@ Dopo aver assegnato una priorità a ciascun ordine, sarà possibile organizzare 
 	\begin{algorithmic}[h!]
 		\caption{Funzione che inserisce ordini in codaPostazione solo se essa non è troppo piena e se il numero totale di ordini in cucina non supera una determinata soglia}
 		\Procedure{InserimentoCodaPostazione}{\text{ordinePQ}}
-		\If{$\text{codaPostazione.isFull()} = \text{false} \land \text{numeroOrdiniTotaliInCucina()} < C$}
+		\If{$\text{codaPostazione.isFull()} = \text{false} \land \text{numeroOrdiniTotaliInCucina()} < \text{C}$}
 		\State $\text{codaPostazione.add(OrdinePQ)}$
 		\EndIf
 		\EndProcedure
