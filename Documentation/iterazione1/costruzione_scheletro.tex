@@ -1,6 +1,7 @@
 \section{Costruzione dello scheletro}
 Vista la necessità di standardizzarsi sulle tecnologie e modalità in uso, la costruzione stessa dello scheletro 
 ha seguito un approccio incrementale: si è iniziato da un microservizio, \textit{GestioneComanda}, per poi proseguire con \textit{GestioneCliente} e \textit{GestioneCucina}.
+Dunque, la realizzazione degli adattatori per ogni microservizio si basa sempre sulla prima implementazione reallizzata in \textit{GestioneComanda}.
 
 \subsection{Organizzazione del processo di sviluppo}
 Per l’implementazione dei microservizi che compongono il sistema ServeEasy, attualmente delineato al primo zoom-in, è stato applicato un approccio “polyrepo"\cite{polyrepo}, definendo per ogni microservizio un’area di progetto dedicata. 
@@ -59,6 +60,13 @@ Facendo leva sulla portabilità offerta dal framework Docker, viene garantito un
 	\caption{interfaccia grafica di PHPMyAdmin eseguito da container
  \label{fig:devopsit1}}
 \end{figure}
+
+\subsection{Realizzazione database MariaDB}
+Utilizzando PHPMyAdmin, è stata semplificata la creazione ed esportazione del database. Realizzato lo schema dati, la funzione "Esporta" lo salva in un file \texttt{.sql} 
+pronto per l'uso. Assieme allo schema, sono stati inoltre definiti ed esportati dei dati di prova su cui operare.
+
+
+
 
 
 \subsection{Definizione Interfacce}
@@ -553,9 +561,6 @@ public class SubClienteAdapterTests {
 In questa classe di test si utilizza un’istanza di Embedded Kafka per simulare il producer, mentre come consumer si utilizza la classe sotto test SubClienteAdapter.
 Si testa il corretto invio di un oggetto creato tramite la classe di supporto testDataUtil e si verifica che il producer invii effettivamente un messaggio sul topic, poi si verifica la ricezione verificando inizialmente che il log della classe SubClienteAdapter sia quello che ci si aspetta, mentre successivamente si verifica che riceva l’oggetto inviato, viene di conseguenza testata anche la deserializzazione.
 
-
-\subsection{Creazione del Database}
-TODO
 
 \subsection{Adattatore JPA}
 Lo sviluppo del componente adibito all'adattatore JPA è stato un processo che ha seguito vari step:
