@@ -1,0 +1,8 @@
+Info,Count
+JavadocStyleCheck,109
+WhitespaceAroundCheck,15
+AvoidStarImportCheck,18
+WhitespaceAfterCheck,35
+RightCurlyCheck,2
+MemberNameCheck,2
+LocalVariableNameCheck,1

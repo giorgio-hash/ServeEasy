@@ -1,0 +1,13 @@
+Warning,Count
+JavadocPackageCheck,12
+LineLengthCheck,102
+DesignForExtensionCheck,50
+MissingJavadocMethodCheck,17
+JavadocVariableCheck,28
+JavadocMethodCheck,5
+NewlineAtEndOfFileCheck,10
+MagicNumberCheck,11
+UnusedImportsCheck,10
+FinalParametersCheck,78
+NeedBracesCheck,16
+RedundantModifierCheck,1
