@@ -62,7 +62,7 @@ Alla radice del progetto, vi è inoltre una cartella dedicata a contenere dati d
  \label{fig:srctreeGestioneComanda}}
 \end{figure}
 
-L'applicativo viene costruito per essere eseguito sulla macchina locale ed esposto su \textit{localhost:8080}. Lo sviluppo in locale è impostato per risolvere le dipendenze di rete dell'applicazione tramite il framework Docker: i servizi offerti da database e message broker vengono quindi eseguiti in container distinti nella rete \texttt{bridge} di Docker (separata dalla rete \texttt{host} della macchina) ed esposte su \textit{localhost} attraverso la tecnica del port binding.
+L'applicativo viene costruito per essere eseguito sulla macchina locale ed esposto su \textit{localhost:8080}. Lo sviluppo in locale è impostato per risolvere le dipendenze di rete dell'applicazione tramite il framework Docker: i servizi offerti da database e message broker vengono quindi eseguiti in container distinti nella rete \texttt{serveeasy\_default} creata da Docker (separata dalla rete \texttt{host} della macchina) ed esposte su \textit{localhost} attraverso la tecnica del port binding.
 
 \begin{lstlisting}[language=yaml, caption={port-binding del servizio \textit{broker} alla voce \textit{ports} (porta\_host:porta\_container) }, label=lst:port-binding]
 [...]
