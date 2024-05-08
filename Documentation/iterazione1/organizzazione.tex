@@ -69,5 +69,17 @@ Alla radice del progetto, vi è inoltre una cartella dedicata a contenere dati d
  \label{fig:srctreeGestioneComanda}}
 \end{figure}
 
-L'applicativo viene costruito per essere eseguito su \textit{localhost:8080}. Lo sviluppo in locale è impostato per risolvere le dipendenze di rete tramite il framework Docker: i servizi offerti da database e message broker vengono quindi sempre esposti su porte distinte dell'interfaccia di rete \textit{localhost}.
+L'applicativo viene costruito per essere eseguito sulla macchina locale ed esposto su \textit{localhost:8080}. Lo sviluppo in locale è impostato per risolvere le dipendenze di rete dell'applicazione tramite il framework Docker: i servizi offerti da database e message broker vengono quindi eseguiti in container distinti nella rete \texttt{bridge} di Docker (separata dalla rete \texttt{host} della macchina) ed esposte su \textit{localhost} attraverso la tecnica del port binding.
+
+\begin{lstlisting}[language=yaml, caption={port-binding del servizio \textit{broker} alla voce \textit{ports} (porta\_host:porta\_container) }, label=lst:port-binding]
+[...]
+	|\color{codeMediumDarkblue}broker|:
+		|\color{codeMediumDarkblue}image|: confluentinc/|\color{black}cp-kafka:7.3.0|
+		|\color{codeMediumDarkblue}container\_name|: broker
+		|\color{codeMediumDarkblue}restart|: always
+		|\color{codeMediumDarkblue}ports|:
+		- "9092:9092"
+[...]
+\end{lstlisting}
+
 \clearpage
