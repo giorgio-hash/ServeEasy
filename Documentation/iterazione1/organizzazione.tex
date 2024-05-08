@@ -51,13 +51,6 @@ Facendo leva sulla portabilità offerta dal framework Docker, viene garantito un
  \label{fig:IDEAit1}}
 \end{figure}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[scale=0.36]{iterazione1/images/phpmyadmin.jpg}
-	\caption{interfaccia grafica di PHPMyAdmin eseguito da container
- \label{fig:phpmyadmin}}
-\end{figure}
-
 Fin dal principio, l'area di lavoro è dotata della source tree che esplicita il layout dei subsystem identificati in fase di progettazione (paragrafo 2.3), comprendendo inoltre la cartella interfunzionale \textit{config}, necessaria per contenere gli artefatti di configurazione delle funzionalità (ad es. per JPA).
 
 Alla radice del progetto, vi è inoltre una cartella dedicata a contenere dati di persistenza (cartella \textit{/db}).
@@ -69,5 +62,17 @@ Alla radice del progetto, vi è inoltre una cartella dedicata a contenere dati d
  \label{fig:srctreeGestioneComanda}}
 \end{figure}
 
-L'applicativo viene costruito per essere eseguito su \textit{localhost:8080}. Lo sviluppo in locale è impostato per risolvere le dipendenze di rete tramite il framework Docker: i servizi offerti da database e message broker vengono quindi sempre esposti su porte distinte dell'interfaccia di rete \textit{localhost}.
+L'applicativo viene costruito per essere eseguito sulla macchina locale ed esposto su \textit{localhost:8080}. Lo sviluppo in locale è impostato per risolvere le dipendenze di rete dell'applicazione tramite il framework Docker: i servizi offerti da database e message broker vengono quindi eseguiti in container distinti nella rete \texttt{serveeasy\_default} creata da Docker (separata dalla rete \texttt{host} della macchina) ed esposte su \textit{localhost} attraverso la tecnica del port binding.
+
+\begin{lstlisting}[language=yaml, caption={port-binding del servizio \textit{broker} alla voce \textit{ports} (porta\_host:porta\_container) }, label=lst:port-binding]
+[...]
+	|\color{codeMediumDarkblue}broker|:
+		|\color{codeMediumDarkblue}image|: confluentinc/|\color{black}cp-kafka:7.3.0|
+		|\color{codeMediumDarkblue}container\_name|: broker
+		|\color{codeMediumDarkblue}restart|: always
+		|\color{codeMediumDarkblue}ports|:
+		- "9092:9092"
+[...]
+\end{lstlisting}
+
 \clearpage
