@@ -65,13 +65,25 @@ Facendo leva sulla portabilità offerta dal framework Docker, viene garantito un
 Utilizzando PHPMyAdmin, è stata semplificata la creazione ed esportazione del database. Realizzato lo schema dati, la funzione "Esporta" lo salva in un file \texttt{.sql} 
 pronto per l'uso. Assieme allo schema, sono stati inoltre definiti ed esportati dei dati di prova su cui operare.
 
-\subsection{Definizione Interfacce}
+\subsection{Definizione Interfacce con principi SOLID}
 % nota: metterei solo quelle di gestione comanda oppure quelle che ci servono per spiegare
 Prima di tutto, sono state scritte le interfacce necessarie per la comunicazione verso i componenti del sistema. 
 In particolare, il design delle interfacce Port risulta cruciale per adottare correttamente il principio d'inversione delle dipendenze: 
 il dominio deve poter ignorare la natura dei device di input, mentre deve comunicare coi dispositivi di output solo attraverso le interfacce Port.
+
+
 In altre parole, si assuma che l'informazione esterna arrivi al layer Interface, venga inoltrata al dominio e poi dal dominio verso Infrastructure, per poi andare ai dispositivi di output:
 il principio d'inversione delle dipendenze vuole che il dominio dipenda da Interface e che Infrastructure dipenda dal dominio, mentre non è concesso il viceversa\cite{PortAdapterPattern}. 
+
+
+Per far ciò, si è cercato di seguire al meglio i cosiddetti principi \textbf{SOLID}\cite{SOLID}:
+\begin{itemize}
+    \item \textbf{S}ingle responsibility: ogni interfaccia raduna funzionalità dedicate ad una specifica mansione;
+    \item \textbf{O}pen close: ogni elemento dev'essere estendibile ma non modificabile;
+    \item \textbf{L}iskov substitution: gli oggetti di una superclasse devono essere rimpiazzabili da oggetti della sottoclasse senza avere effetti sul funzionamento del programma; 
+    \item \textbf{I}nterface segregation: interfacce il più possibile contenute per evitarne sottouso;
+    \item \textbf{D}ependency inversion: moduli di alto livello non dipendono da moduli di basso livello, entrambi dipendono da interfacce, le interfacce sono indipendenti.
+\end{itemize}
 \begin{lstlisting}[style=myJava, 
     caption={Interfaccia MessagePort}, label=lst:messageport, emph={[3] send},
     emphstyle={[3]\color{codeCyan}}]
@@ -915,8 +927,8 @@ jobs:
         cache: maven
     - name: Run the Maven verify phase
       run: mvn --batch-mode clean verify
-    - name: Build & push docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
+    - name: |\color{black}Build \& push docker image|
+      uses: |\color{black}mr-smithers-excellent/docker-build-push@v5|
       with:
         image: gchirico1/gestione_comanda
         tags: latest
@@ -1465,4 +1477,55 @@ A questo punto vengono testate le API tramite Postman, si rimanda nuovamente all
     \label{fig:postman-screen}
 \end{figure}
 In questo esempio viene effettuata una richiesta di PATCH di aggiornamento parziale di un ordine, viene specificata la variabile di percorso \textit{id=1} e il corpo della richiesta, ossia il JSON con il quale sono descritti i campi di \textit{stato} e \textit{urgenzaCliente} da aggiornare. Si può notare il codice di risposta 200 OK che viene restituito quando una richiesta HTTP è stata completata con successo e il corpo della risposta, ovvero un JSON contenente l'oggetto OrdineDTO serializzato.
+
+
+\subsection{Definizione Domain}
+Eseguiti i test sulle funzionalità in rete dei layer Interface e Infrastructure, si è passati all'attuale implementazione di una elementare business logic. Attualmente, l'obiettivo principale è la verifica del passaggio dati da un componente ad un altro: i componenti di dominio, per mezzo delle port, devono poter ricevere e trasmettere in maniera "cieca", ignorando qualsiasi attuale implementazione per la ricetrasmissione. 
+
+Soffermandoci sul punto \textbf{L} dei principi \textbf{SOLID}, l'annotazione \texttt{@Autowired} ha permesso una maggiore enfatizzazione del concetto: le classi della business logic dichiarano l'interfaccia che utilizzano per interagire col livello Infrastructure, ma \textit{senza sapere quale implementazione}, poichè quest'ultima è iniettata automanticamente da Spring Boot.
+
+Analogalmente, sempre grazie all'annotazione \texttt{@Autowired}, anche il livello Interface comunicherà verso il dominio attraverso una porta, senza sapere \textit{chi sta offrendo} le funzionalità.
+
+Attualmente, per motivi di debug, sono state inserite variabili nel dominio come \textit{topic\_notifyPrepEvent}, la quale esplicita il topic kafka, ma non lede i principi SOLID almeno dal punto di vista strutturale: il valore non è stato iniettato dal altri livelli ma, bensì, è stato estratto dal \textit{application.properties}.
+
+\begin{lstlisting}[style=myJava, caption={classe GestionePrioritàOrdini.java nel dominio di GestioneComanda}, label=lst:GestioenPrioritaOrdiniClass]
+    @Service
+    @Log
+    public class GestionePrioritaOrdini implements ClientePort {
+        private final DataPort dataPort;
+        private final AlgIF algIF;
+        @Value("${spring.kafka.consumer.gestioneCliente.topic}")
+        private String topic_notifyPrepEvent;
+    
+        @Autowired
+        public GestionePrioritaOrdini(DataPort dataPort, AlgIF algIF) {
+            this.dataPort = dataPort;
+            this.algIF = algIF;
+        }
+    
+        @Override
+        public void notifyOrder(NotificaOrdineDTO notificaOrdineDTO) {
+            log.info("Received a notify from "
+                    + topic_notifyPrepEvent
+                    + " : { id: " + notificaOrdineDTO.getId()
+                    + ", idComanda: "
+                    + notificaOrdineDTO.getIdComanda() + "}");
+    
+            extractOrderAndSendToHeap(notificaOrdineDTO);
+        }
+    
+        private void extractOrderAndSendToHeap(NotificaOrdineDTO notificaOrdineDTO){
+    
+            Optional<OrdineEntity> no = dataPort.getOrderById(notificaOrdineDTO.getId());
+            if(no.isPresent()){
+                log.info( "pushing " + no.get() + "to heap!");
+                algIF.pushNewOrder(no.get());
+            }else
+                log.info( "oggetto Ordine non trovato!!");
+        }
+    
+    }
+\end{lstlisting}
+
+
 \clearpage
