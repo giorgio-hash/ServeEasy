@@ -32,12 +32,14 @@ Consente ai clienti di specificare la tempestività con cui desiderano ricevere 
 \paragraph{x4 numero ordine effettuato:}
 Specifica il numero dell’ordine del cliente in ordine temporale, in particolare indica la posizione relativa di un ordine all'interno della sequenza di ordini effettuati da egli stesso.
 \begin{itemize}
-	\item il primo ordine effettuato ha priorità maggiore, mentre i successivi hanno priorità decrescente;
-	\item normalizzazione: \begin{equation*}
-		\text{x4} = \frac{\text{noe} - 1}{\text{max}_{\text{noe}} - 1}
-	\end{equation*} con noe: numero ordini effettuati,\\
-	$\text{max}_{\text{noe}} \text{: massimo numero ordini effettuabili;}$
-	\item considerare un valore massimo di ordini (es.5 gli ordini dopo il quinto sono comunque consentiti e prenderanno la stessa priorità del 5° ordine).
+	\item il primo ordine effettuato ha priorità maggiore, mentre i successivi hanno priorità decrescente data dalla normalizzazione, fino ad un numero di ordine soglia oltre il quale la priorità sarà minima;
+
+	\[ f(\text{x4}) = \begin{cases} \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]\\
+
+	$\textbf{noe} \text{: numero ordine effettuato}$\\
+	$\textbf{sogliaMax} \text{: massimo numero ordini effettuabili;}$
+
+	\item \textbf{ESEMPIO: } \textit{sia dato sogliaMax = 5, il 1° avrà priorità 1 (massima), dal 2° al 5° avremo priorità normata, dopo 5 ordine il parametro x4 avrà priorità 0 (minima).}
 \end{itemize}
 
 \paragraph{x5 tempo in attesa:}
