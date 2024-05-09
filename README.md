@@ -7,9 +7,21 @@ Componenti attualmente in beta:
  * [GestioneCucina](https://github.com/giorgio-hash/GestioneCucina.git): gestione a code verso le postazioni di cucina, classificate per ingrediente;
  * [GestioneCliente](https://github.com/giorgio-hash/GestioneCliente.git): gestione di comande (intesa come collezione dei singoli ordini) ed ordini verso il dispositivo cliente.
 
-### Deploy del sistema a microservizi utilizzando Docker Compose 
+### Setup del deployment (demo)
 
-Prima di procedere è necessario scaricare Docker Desktop (Windows) o Docker Engine (Linux, Mac).
+Prima di procedere è necessario possedere Docker Desktop (Windows, Mac) o Docker Engine (Linux, Mac).
+
+Si può clonare questa repository con git, oppure è sufficiente creare una cartella dove copiare la cartella db/ ed il file docker-compose.yaml di questa repository, ricreando la seguente struttura:
+
+```
+cartella/
+└───db/
+│   └───initial-data-and-schema.sql 
+└───docker-compose.yaml
+```
+In particolare, initial-data-and-schema.sql contiene schema SQL e dati di prova ai fini della demo.
+
+### Deploy del sistema a microservizi utilizzando Docker Compose 
 
 Per scaricare le dipendenze ed avviare la rete di microservizi, aprire una riga di comando nella cartella contenente il <i>docker-compose.yaml</i> e digitare il comando:
 ```shell
