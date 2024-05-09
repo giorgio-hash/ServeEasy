@@ -1,22 +1,27 @@
 \section{Analisi Statica}
 
-\subsection{Introduzione TODO AGGIUNGERE HREF}
+\subsection{Introduzione}
 
 Garantire la qualità del codice sorgente è fondamentale per assicurare la stabilità, l'affidabilità e la manutenibilità delle applicazioni. Tra gli strumenti utilizzati per questo scopo, l'analisi statica del codice riveste un ruolo cruciale. In questo Progetto è quindi stato utilizzato \textbf{Checkstyle}, \href{https://checkstyle.sourceforge.io/}{https://checkstyle.sourceforge.io/}, che permette una valutazione automatica della conformità del codice e linee guida da seguire.
 \\
 Questo documento si propone di fornire una panoramica dettagliata sull'utilizzo di Checkstyle per condurre analisi statiche del codice sorgente. Esploreremo le sue funzionalità, le principali regole di analisi implementate e i benefici derivanti dall'integrazione di questa pratica nella fase di sviluppo del software. Vengono ora mostrati alcuni report generati dai vari microservizi.
 
-\begin{comment}
+
 È inoltre possibile visualizzare per intero i report generati nei seguenti documenti:
 
 
 \begin{itemize}
-	\item Gestione Comanda:
+	\item Gestione Comanda: 
+	
+	{\small 	\href{https://giorgio-hash.github.io/ServeEasy/Report/GestioneComanda/site/checkstyle.html}{https://giorgio-hash.github.io/ServeEasy/Report/GestioneComanda/site/checkstyle.html}}
 	\item Gestione Cliente: 
+	
+	{\small 	\href{https://giorgio-hash.github.io/ServeEasy/Report/GestioneCliente/site/checkstyle.html}{https://giorgio-hash.github.io/ServeEasy/Report/GestioneCliente/site/checkstyle.html}}
 	\item Gestione Cucina: 
+	
+	{\small \href{https://giorgio-hash.github.io/ServeEasy/Report/GestioneCucina/site/checkstyle.html}{https://giorgio-hash.github.io/ServeEasy/Report/GestioneCucina/site/checkstyle.html}}
 \end{itemize}
-\end{comment}
-
+Per poter visualizzare i file di report online si è utilizzato il servizio offerto da GitHub: GitHub Pages\cite{github-pages}, esso permette di ospitare siti web statici generati da repository GitHub pubbliche.
 
 \newpage
 
@@ -32,6 +37,37 @@ Questo documento si propone di fornire una panoramica dettagliata sull'utilizzo 
 	\centering
 	\includegraphics[scale=0.8]{iterazione1/images/Cs_rules_Gestione_Comanda.jpg}
 	\caption{Rules generate da gestione comanda\label{fig:Cs_Rules_Gestione_Comanda}}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[b]{1\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/comanda-error_distribution_pie_chart.png}
+		\caption{Grafico di tutte le regole}
+		\label{fig:comanda-error_distribution_pie_chart}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/comanda-info_severity_distribution_pie_chart.png}
+		\caption{Grafico delle info}
+		\label{fig:comanda-info_severity_distribution_pie_chart}
+	\end{minipage}
+	\vspace{0.5cm}
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/comanda-warning_severity_distribution_pie_chart.png}
+		\caption{Grafico degli warnings}
+		\label{fig:comanda-warning_severity_distribution_pie_chart}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/comanda-error_severity_distribution_pie_chart.png}
+		\caption{Grafico degli errori}
+		\label{fig:comanda-error_severity_distribution_pie_chart}
+	\end{minipage}
 \end{figure}
 
 \newpage
@@ -50,6 +86,37 @@ Questo documento si propone di fornire una panoramica dettagliata sull'utilizzo 
 	\caption{Rules generate da gestione cliente\label{fig:Cs_Rules_Gestione_Cliente}}
 \end{figure}
 
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[b]{1\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cliente-error_distribution_pie_chart.png}
+		\caption{Grafico di tutte le regole}
+		\label{fig:cliente-error_distribution_pie_chart}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cliente-info_severity_distribution_pie_chart.png}
+		\caption{Grafico delle info}
+		\label{fig:cliente-info_severity_distribution_pie_chart}
+	\end{minipage}
+	\vspace{0.5cm}
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cliente-warning_severity_distribution_pie_chart.png}
+		\caption{Grafico degli warnings}
+		\label{fig:cliente-warning_severity_distribution_pie_chart}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cliente-error_severity_distribution_pie_chart.png}
+		\caption{Grafico degli errori}
+		\label{fig:cliente-error_severity_distribution_pie_chart}
+	\end{minipage}
+\end{figure}
+
 \newpage
 
 \subsection{Report Gestione Cucina}
@@ -64,6 +131,37 @@ Questo documento si propone di fornire una panoramica dettagliata sull'utilizzo 
 	\centering
 	\includegraphics[scale=0.9]{iterazione1/images/Cs_rules_Gestione_Cucina.jpg}
 	\caption{Rules generate da gestione cucina\label{fig:Cs_Rules_Gestione_Cucina}}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[b]{1\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cucina-error_distribution_pie_chart.png}
+		\caption{Grafico di tutte le regole}
+		\label{fig:cucina-error_distribution_pie_chart}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cucina-info_severity_distribution_pie_chart.png}
+		\caption{Grafico delle info}
+		\label{fig:cucina-info_severity_distribution_pie_chart}
+	\end{minipage}
+	\vspace{0.5cm}
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cucina-warning_severity_distribution_pie_chart.png}
+		\caption{Grafico degli warnings}
+		\label{fig:cucina-warning_severity_distribution_pie_chart}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{iterazione1/images/cucina-error_severity_distribution_pie_chart.png}
+		\caption{Grafico degli errori}
+		\label{fig:cucina-error_severity_distribution_pie_chart}
+	\end{minipage}
 \end{figure}
 
 
