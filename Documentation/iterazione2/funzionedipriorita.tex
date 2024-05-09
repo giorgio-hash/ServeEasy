@@ -14,15 +14,15 @@ Indica il valore di priorità che presenta l'ingrediente predominante dell’ord
 \paragraph{x2 tempo di preparazione:}
 Rappresenta la durata stimata necessaria per preparare un determinato ordine.
 \begin{itemize}
-	\item normalizzazione: \begin{equation*}
-		\text{tp}_{\text{norm}} = \frac{\text{tp} - \text{tp}_{\text{min}}}{\text{tp}_{\text{max}} - \text{tp}_{\text{min}}}
-	\end{equation*} con tp: tempo di preparazione,\\
-
-	\[ f(\text{noe}) = \begin{cases} \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]\\
-
-	$\text{tp}_{\text{max}}: \text{tempo di preparazione massimo,}$\\
-	$\text{tp}_{\text{min}}: \text{tempo di preparazione minimo;}$
-	\item $\text{considerare x2 = tp}_{\text{norm}} \text{ per prioritizzare ordini più lunghi,}\\ \text{oppure x2 = 1-tp}_{\text{norm}} \text{ per prioritizzare ordini più brevi.}$
+	\item normalizzazione: 
+	\begin{equation*}
+		\text{tp}_{\text{norm}} = \frac{\text{tp} - \text{tp}_{\text{min}}}{\text{tp}_{\text{max}} - \text{tp}_{\text{min}}}	
+	\end{equation*}
+	
+	\item \text{tp}: tempo di preparazione
+	\item $\text{tp}_{\text{max}}$: tempo di preparazione massimo;
+	\item $\text{tp}_{\text{min}}$: tempo di preparazione minimo;
+	\item Considerare $x2 = \text{tp}_{\text{norm}}$ per prioritizzare ordini più lunghi, oppure $x2 = 1-\text{tp}_{\text{norm}}$ per prioritizzare ordini più brevi.
 \end{itemize}
 
 \paragraph{x3 urgenza del cliente:}
@@ -35,22 +35,23 @@ Consente ai clienti di specificare la tempestività con cui desiderano ricevere 
 \paragraph{x4 numero ordine effettuato:}
 Specifica il numero dell’ordine del cliente in ordine temporale, in particolare indica la posizione relativa di un ordine all'interno della sequenza di ordini effettuati da egli stesso.
 \begin{itemize}
+
 	\item il primo ordine effettuato ha priorità maggiore, mentre i successivi hanno priorità decrescente data dalla normalizzazione, fino ad un numero di ordine soglia oltre il quale la priorità sarà minima;
+	
+	\item funzione: \[ f(\text{noe}) = \begin{cases} 1 - \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]
 
-	\[ f(\text{noe}) = \begin{cases} 1 - \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]\\
-
-	$\textbf{noe} \text{: numero ordine effettuato}$\\
-	$\textbf{sogliaMax} \text{: massimo numero ordini effettuabili;}$
-
+	\item \textbf{noe} \text{: numero ordine effettuato;}
+	\item \textbf{sogliaMax} \text{: massimo numero ordini effettuabili;}
 	\item \textbf{ESEMPIO: } \textit{sia dato sogliaMax = 5, il 1° avrà priorità 1 (massima), dal 2° al 5° avremo priorità normata, dopo 5 ordine il parametro x4 avrà priorità 0 (minima).}
 \end{itemize}
 
 \paragraph{x5 tempo in attesa:}
 Rappresenta il periodo di tempo trascorso da quando un ordine è stato effettuato fino al momento in cui viene elaborato.
 \begin{itemize}
-	\item normalizzazione: \begin{equation*}
-		\text{x5} = \frac{\text{tempo in attesa}}{\text{tempo max in attesa}}
-	\end{equation*}
+	\item funzione: \[ f(\text{tempo di attesa}) = \begin{cases} \frac{\text{tempo di attesa}}{\text{tempo max in attesa}} & \text{se } \text{tempo di attesa} \leq \text{tempo max di attesa} \\ 1 & \text{se } \text{tempo di attesa} > \text{tempo max di attesa} \end{cases} \]
+
+	\item \textbf{tempo di attesa:} è dato dalla differenza fra istante di tempo attuale e istante di tempo della richiesta ordine;
+	\item \textbf{tempo max di attesa:} massimo tempo di attesa ordini oltre il quale la priorità è massima;
 	\item considerare un valore massimo di tempo in attesa consentito, in prossimità del quale si ha la priorità più elevata.
 \end{itemize}
 
