@@ -17,6 +17,9 @@ Rappresenta la durata stimata necessaria per preparare un determinato ordine.
 	\item normalizzazione: \begin{equation*}
 		\text{tp}_{\text{norm}} = \frac{\text{tp} - \text{tp}_{\text{min}}}{\text{tp}_{\text{max}} - \text{tp}_{\text{min}}}
 	\end{equation*} con tp: tempo di preparazione,\\
+
+	\[ f(\text{noe}) = \begin{cases} \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]\\
+
 	$\text{tp}_{\text{max}}: \text{tempo di preparazione massimo,}$\\
 	$\text{tp}_{\text{min}}: \text{tempo di preparazione minimo;}$
 	\item $\text{considerare x2 = tp}_{\text{norm}} \text{ per prioritizzare ordini più lunghi,}\\ \text{oppure x2 = 1-tp}_{\text{norm}} \text{ per prioritizzare ordini più brevi.}$
@@ -34,7 +37,7 @@ Specifica il numero dell’ordine del cliente in ordine temporale, in particolar
 \begin{itemize}
 	\item il primo ordine effettuato ha priorità maggiore, mentre i successivi hanno priorità decrescente data dalla normalizzazione, fino ad un numero di ordine soglia oltre il quale la priorità sarà minima;
 
-	\[ f(\text{x4}) = \begin{cases} \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]\\
+	\[ f(\text{noe}) = \begin{cases} 1 - \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]\\
 
 	$\textbf{noe} \text{: numero ordine effettuato}$\\
 	$\textbf{sogliaMax} \text{: massimo numero ordini effettuabili;}$
