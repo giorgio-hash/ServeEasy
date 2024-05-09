@@ -1,3 +1,12 @@
+### ServeEasy
+
+Software Gestionale per il managing di un'attività di ristorazione con design a microservizi.
+
+Componenti attualmente in beta:
+ * [GestioneComanda](https://github.com/giorgio-hash/GestioneComanda.git): schedulazione algoritmica degli ordini tramite struttura a priorità;
+ * [GestioneCucina](https://github.com/giorgio-hash/GestioneCucina.git): gestione a code verso le postazioni di cucina, classificate per ingrediente;
+ * [GestioneCliente](https://github.com/giorgio-hash/GestioneCliente.git): gestione di comande (intesa come collezione dei singoli ordini) ed ordini verso il dispositivo cliente.
+
 ### Deploy del sistema a microservizi utilizzando Docker Compose 
 
 Prima di procedere è necessario scaricare Docker Desktop (Windows) o Docker Engine (Linux, Mac).
