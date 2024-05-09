@@ -7,7 +7,7 @@ Componenti attualmente in beta:
  * [GestioneCucina](https://github.com/giorgio-hash/GestioneCucina.git): gestione a code verso le postazioni di cucina, classificate per ingrediente;
  * [GestioneCliente](https://github.com/giorgio-hash/GestioneCliente.git): gestione di comande (intesa come collezione dei singoli ordini) ed ordini verso il dispositivo cliente.
 
-### Setup del deployment
+### Setup del deployment (demo)
 
 Prima di procedere è necessario possedere Docker Desktop (Windows, Mac) o Docker Engine (Linux, Mac).
 
@@ -19,6 +19,7 @@ cartella/
 │   └───initial-data-and-schema.sql 
 └───docker-compose.yaml
 ```
+In particolare, initial-data-and-schema.sql contiene schema SQL e dati di prova ai fini della demo.
 
 ### Deploy del sistema a microservizi utilizzando Docker Compose 
 
