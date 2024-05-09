@@ -1,28 +1,34 @@
 \section{Analisi Statica}
 
-TODO: Intro, report e spiegazione errori e warnings ecc ...
+\subsection{Introduzione TODO AGGIUNGERE HREF}
 
-\subsection{Intro}
-
-Garantire la qualità del codice sorgente è fondamentale per assicurare la stabilità,l'affidabilità e la manutenibilità delle applicazioni. Tra gli strumenti utilizzati per questo scopo, l'analisi statica del codice riveste un ruolo cruciale. In questo Progetto è quindi stato utilizzato \textbf{\textbf{Checkstyle}}, che permette una valutazione automatica della conformità del codice e linee guida da seguire.
+Garantire la qualità del codice sorgente è fondamentale per assicurare la stabilità, l'affidabilità e la manutenibilità delle applicazioni. Tra gli strumenti utilizzati per questo scopo, l'analisi statica del codice riveste un ruolo cruciale. In questo Progetto è quindi stato utilizzato \textbf{Checkstyle}, \href{https://checkstyle.sourceforge.io/}{https://checkstyle.sourceforge.io/}, che permette una valutazione automatica della conformità del codice e linee guida da seguire.
 \\
-Questo documento si propone di fornire una panoramica dettagliata sull'utilizzo di Checkstyle per condurre analisi statiche del codice sorgente. Esploreremo le sue funzionalità, le principali regole di analisi implementate e i benefici derivanti dall'integrazione di questa pratica nella fase di sviluppo del software. Vengono ora mostrati i vari report generati dai vari microservizi:
+Questo documento si propone di fornire una panoramica dettagliata sull'utilizzo di Checkstyle per condurre analisi statiche del codice sorgente. Esploreremo le sue funzionalità, le principali regole di analisi implementate e i benefici derivanti dall'integrazione di questa pratica nella fase di sviluppo del software. Vengono ora mostrati alcuni report generati dai vari microservizi.
+
+È inoltre possibile visualizzare per intero i report generati nei seguenti documenti:
+
+
+\begin{itemize}
+	\item Gestione Comanda:
+	\item Gestione Cliente: 
+	\item Gestione Cucina: 
+\end{itemize}
+
 
 \newpage
 
 \subsection{Report Gestione Comanda}
 
-TODO: parla
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.6]{iterazione1/images/Cs_Summary_Gestione_Comanda.jpg}
 	\caption{Sommario di gestione comanda\label{fig:Cs_Summary_Gestione_Comanda}}
 \end{figure}
 
-TODO: parla
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.9]{iterazione1/images/Cs_rules_Gestione_Comanda.jpg}
+	\includegraphics[scale=0.8]{iterazione1/images/Cs_rules_Gestione_Comanda.jpg}
 	\caption{Rules generate da gestione comanda\label{fig:Cs_Rules_Gestione_Comanda}}
 \end{figure}
 
@@ -30,14 +36,12 @@ TODO: parla
 
 \subsection{Report Gestione Cliente}
 
-TODO: parla
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.6]{iterazione1/images/Cs_Summary_Gestione_Cliente.jpg}
 	\caption{Sommario di gestione cliente\label{fig:Cs_Summary_Gestione_Cliente}}
 \end{figure}
 
-TODO: parla
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.8]{iterazione1/images/Cs_rules_Gestione_Cliente.jpg}
@@ -48,17 +52,15 @@ TODO: parla
 
 \subsection{Report Gestione Cucina}
 
-TODO: parla
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.6]{iterazione1/images/Cs_Summary_Gestione_Cucina.jpg}
 	\caption{Sommario di gestione cucina\label{fig:Cs_Summary_Gestione_Cucina}}
 \end{figure}
 
-TODO: parla
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=1.0]{iterazione1/images/Cs_rules_Gestione_Cucina.jpg}
+	\includegraphics[scale=0.9]{iterazione1/images/Cs_rules_Gestione_Cucina.jpg}
 	\caption{Rules generate da gestione cucina\label{fig:Cs_Rules_Gestione_Cucina}}
 \end{figure}
 
@@ -138,7 +140,173 @@ Di seguito vengono ora date le Specifiche segnalate dai vari report.
 
 	\end{itemize}
 
-TODO: spiegare come si fa ad utilizzare checkstyle, il comando maven per farlo partire, la dipendenza che serve nel pom.xml, le regole in checkstyle.xml e il plugin per intelliJ 
+\subsection{Checkstyle}
+
+\paragraph{Installazione:}
+Per poter utilizzare le funzionalità di checkstyle all'interno dell'IDEA itelliJ è stato installa un plugin disponibile all'interno del marketplace di IntelliJ, ovvero CheckStyle-IDEA\cite{jetbrains}. Di seguito viene mostrata la schermata che permette l'installazione di quest'ultima.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.8]{iterazione1/images/Install_checkstyle_intelliJ.jpg}
+	\caption{Schermata installazione plugin\label{fig:Install_checkstyle_intelliJ}}
+\end{figure}
+
+\paragraph{Configurazione e personalizzazione:}
+Per la configurazione del plugin di checkstyle in maven è stato introdotto all'interno del file \textbf{pom.xml} la seguente: 
+
+\begin{lstlisting}[language=XML, caption={plugin Maven con Maven Checkstyle Plugin}]
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-checkstyle-plugin</artifactId>
+	<version>3.3.1</version>
+	<configuration>
+		<configLocation>checkstyle.xml</configLocation>
+	</configuration>
+	<executions>
+		<execution>
+			<goals>
+				<goal>checkstyle</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+\end{lstlisting}
+
+Abbiamo quindi creato un file Checkstyle.xml personalizzando le regole di Sun Checkstyle, che definiscono un insieme di regole di programmazione per la scrittura del codice. Questo ci aiuta a adattare le regole alle nostre specifiche esigenze, garantendo uno stile di codifica coerente e di alta qualità. Le categorie di violazioni controllate sono: Blocks, coding, design, javadoc, imports, misc, naming, sizes, whitespace e modifier.
+
+\begin{lstlisting}[language=XML, caption={Personalizzazioni regole di Sun Checkstyle}]
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<!--
+  Checkstyle configuration that checks the sun coding
+-->
+
+<module name="Checker">
+
+    <property name="severity" value="error"/>
+
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- Excludes all 'module-info.java' files              -->
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value="module\-info\.java$"/>
+    </module>
+
+    <module name="SuppressionFilter">
+        <property name="file" value="${org.checkstyle.sun.suppressionfilter.config}"
+                  default="checkstyle-suppressions.xml" />
+        <property name="optional" value="true"/>
+    </module>
+
+    <!-- Checks that a package-info.java file exists for each package.     -->
+    <module name="JavadocPackage">
+        <property name="severity" value="warning"/>
+    </module>
+
+    <!-- Checks whether files end with a new line.                        -->
+    <module name="NewlineAtEndOfFile">
+        <property name="severity" value="warning"/>
+    </module>
+
+    <!-- Checks that property files contain the same keys.         -->
+    <module name="Translation"/>
+
+    <!-- Checks for Size Violations.                    -->
+    <module name="FileLength">
+        <property name="severity" value="warning"/>
+    </module>
+    <module name="LineLength">
+        <property name="fileExtensions" value="java"/>
+        <property name="severity" value="warning"/>
+    </module>
+
+    <!-- Checks for whitespace                               -->
+    <module name="FileTabCharacter">
+        <property name="severity" value="warning"/>
+    </module>
+
+    <module name="TreeWalker">
+
+        <!-- Checks for Javadoc comments.                     -->
+        <module name="InvalidJavadocPosition">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="JavadocMethod">
+            <property name="severity" value="warning"/>
+        </module>
+        
+        <!-- Checks for Naming Conventions.                  -->
+        <module name="ConstantName">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="LocalFinalVariableName">
+            <property name="severity" value="info"/>
+        
+        <!-- Checks for imports                              -->
+        <module name="AvoidStarImport">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="IllegalImport"> 
+
+        <!-- Checks for Size Violations.                    -->
+        <module name="MethodLength">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="ParameterNumber">
+            <property name="severity" value="info"/>
+        </module>
+
+        <!-- Checks for whitespace                               -->
+        <module name="EmptyForIteratorPad">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="GenericWhitespace">
+            <property name="severity" value="info"/>
+        </module>
+
+        <!-- Checks for blocks. You know, those {}'s         -->
+        <module name="AvoidNestedBlocks">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="EmptyBlock">
+            <property name="severity" value="error"/>
+        </module>
+
+        <!-- Checks for class design                         -->
+        <module name="DesignForExtension">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="FinalClass">
+            <property name="severity" value="warning"/>
+        </module>
+
+
+        <module name="SuppressionXpathFilter">
+            <property name="file" value="${org.checkstyle.sun.suppressionxpathfilter.config}"
+                      default="checkstyle-xpath-suppressions.xml" />
+            <property name="optional" value="true"/>
+        </module>
+
+    </module>
+
+</module>
+\end{lstlisting}
+
+\paragraph{Esecuzione:}
+Avvenuta la fase di installazione e configurazione è ora possibile identificare e correggere le violazioni di stile definite nel file di configurazione.
+
+Per eseguire il controllo di stile è sufficiente eseguire il comando:
+\begin{lstlisting}[style=terminal, 
+	caption={Avvio controllo checkstyle}]
+mvn site
+\end{lstlisting}
+
+Esso permetterà di generare all'interno della directory \textbf{target > site} contenente i file html e xml con i report generati.
+
+
 
 \subsection{Generazione Grafi}
 Al fine di poter visualizzare con più semplicità i file di report sono stati generati dei grafici a torta che mostrano il tipo di errore rilevato e la percentuale delle volte in cui è stato commesso.

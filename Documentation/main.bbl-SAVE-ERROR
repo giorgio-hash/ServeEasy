@@ -275,6 +275,37 @@
       \verb https://docs.docker.com/get-started/overview/
       \endverb
     \endentry
+    \entry{geeksforgeeks}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=a6eb56f80be8a120436d6f1c9b8d87ca}{%
+           family={{geeksforgeeks}},
+           familyi={g\bibinitperiod}}}%
+      }
+      \strng{namehash}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \strng{fullhash}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \strng{fullhashraw}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \strng{bibnamehash}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \strng{authorbibnamehash}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \strng{authornamehash}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \strng{authorfullhash}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \strng{authorfullhashraw}{a6eb56f80be8a120436d6f1c9b8d87ca}
+      \field{sortinit}{g}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Indexed Priority Queue with Implementation}
+      \field{urlday}{29}
+      \field{urlmonth}{11}
+      \field{urlyear}{2022}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.geeksforgeeks.org/indexed-priority-queue-with-implementation/
+      \endverb
+      \verb{url}
+      \verb https://www.geeksforgeeks.org/indexed-priority-queue-with-implementation/
+      \endverb
+    \endentry
     \entry{HexagonalArchitecture}{online}{}{}
       \name{author}{1}{}{%
         {{hash=e7bb4b2d9d5da02df214baea5a8bb06a}{%
@@ -355,6 +386,37 @@
       \endverb
       \verb{url}
       \verb https://www.arhohuttunen.com/spring-boot-jsontest/
+      \endverb
+    \endentry
+    \entry{jetbrains}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=b46f9aaef7eeb8bff531b7c90110d547}{%
+           family={{Jamie Shiell}},
+           familyi={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{b46f9aaef7eeb8bff531b7c90110d547}
+      \strng{fullhash}{b46f9aaef7eeb8bff531b7c90110d547}
+      \strng{fullhashraw}{b46f9aaef7eeb8bff531b7c90110d547}
+      \strng{bibnamehash}{b46f9aaef7eeb8bff531b7c90110d547}
+      \strng{authorbibnamehash}{b46f9aaef7eeb8bff531b7c90110d547}
+      \strng{authornamehash}{b46f9aaef7eeb8bff531b7c90110d547}
+      \strng{authorfullhash}{b46f9aaef7eeb8bff531b7c90110d547}
+      \strng{authorfullhashraw}{b46f9aaef7eeb8bff531b7c90110d547}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Checkstyle plugin for intelliJ IDE}
+      \field{urlday}{9}
+      \field{urlmonth}{5}
+      \field{urlyear}{2024}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://plugins.jetbrains.com/plugin/1065-checkstyle-idea
+      \endverb
+      \verb{url}
+      \verb https://plugins.jetbrains.com/plugin/1065-checkstyle-idea
       \endverb
     \endentry
     \entry{polyrepo}{online}{}{}
@@ -535,6 +597,37 @@
       \field{urlmonth}{4}
       \field{urlyear}{2024}
       \field{urldateera}{ce}
+    \endentry
+    \entry{phoenixnap}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=9f6911d4a704864954651c9de338377b}{%
+           family={{PhoenixNAP}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{9f6911d4a704864954651c9de338377b}
+      \strng{fullhash}{9f6911d4a704864954651c9de338377b}
+      \strng{fullhashraw}{9f6911d4a704864954651c9de338377b}
+      \strng{bibnamehash}{9f6911d4a704864954651c9de338377b}
+      \strng{authorbibnamehash}{9f6911d4a704864954651c9de338377b}
+      \strng{authornamehash}{9f6911d4a704864954651c9de338377b}
+      \strng{authorfullhash}{9f6911d4a704864954651c9de338377b}
+      \strng{authorfullhashraw}{9f6911d4a704864954651c9de338377b}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{How to Install Python 3 on Windows}
+      \field{urlday}{9}
+      \field{urlmonth}{5}
+      \field{urlyear}{2024}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://phoenixnap.com/kb/how-to-install-python-3-windows
+      \endverb
+      \verb{url}
+      \verb https://phoenixnap.com/kb/how-to-install-python-3-windows
+      \endverb
     \endentry
     \entry{CDDocker}{online}{}{}
       \name{author}{1}{}{%
