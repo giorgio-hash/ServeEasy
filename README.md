@@ -1,4 +1,4 @@
-### ServeEasy
+# ServeEasy
 
 Software Gestionale per il managing di un'attività di ristorazione con design a microservizi.
 
