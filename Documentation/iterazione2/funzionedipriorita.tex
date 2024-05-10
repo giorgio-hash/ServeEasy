@@ -11,6 +11,7 @@ Indica il valore di priorità che presenta l'ingrediente predominante dell’ord
 	\item se la cucina è scarica aumentare il valore di x1(max 1)
 \end{itemize}
 
+
 \paragraph{x2 tempo di preparazione:}
 Rappresenta la durata stimata necessaria per preparare un determinato ordine.
 \begin{itemize}
@@ -19,11 +20,13 @@ Rappresenta la durata stimata necessaria per preparare un determinato ordine.
 		\text{tp}_{\text{norm}} = \frac{\text{tp} - \text{tp}_{\text{min}}}{\text{tp}_{\text{max}} - \text{tp}_{\text{min}}}	
 	\end{equation*}
 	
-	\item \text{tp}: tempo di preparazione
-	\item $\text{tp}_{\text{max}}$: tempo di preparazione massimo;
-	\item $\text{tp}_{\text{min}}$: tempo di preparazione minimo;
+	\item \textbf{tp}: tempo di preparazione
+	\item $\textbf{tp}_{\textbf{max}}$: tempo di preparazione massimo;
+	\item $\textbf{tp}_{\textbf{min}}$: tempo di preparazione minimo;
 	\item Considerare $x2 = \text{tp}_{\text{norm}}$ per prioritizzare ordini più lunghi, oppure $x2 = 1-\text{tp}_{\text{norm}}$ per prioritizzare ordini più brevi.
 \end{itemize}
+
+
 
 \paragraph{x3 urgenza del cliente:}
 Consente ai clienti di specificare la tempestività con cui desiderano ricevere il proprio ordine, in particolare i clienti possono chiedere espressamente di avere urgenza, al contrario possono non dire nulla e tenere un valore di urgenza di default.
@@ -38,7 +41,8 @@ Specifica il numero dell’ordine del cliente in ordine temporale, in particolar
 
 	\item il primo ordine effettuato ha priorità maggiore, mentre i successivi hanno priorità decrescente data dalla normalizzazione, fino ad un numero di ordine soglia oltre il quale la priorità sarà minima;
 	
-	\item funzione: \[ f(\text{noe}) = \begin{cases} 1 - \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]
+	\item funzione: \[1 - f(\text{noe}) = \begin{cases} \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]
+
 
 	\item \textbf{noe} \text{: numero ordine effettuato;}
 	\item \textbf{sogliaMax} \text{: massimo numero ordini effettuabili;}
