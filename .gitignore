@@ -332,3 +332,5 @@ Documentation/*.xwm
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
 
+*.bbl-SAVE-ERROR
+*.bcf-SAVE-ERROR
