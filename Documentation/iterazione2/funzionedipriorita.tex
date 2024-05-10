@@ -11,16 +11,22 @@ Indica il valore di priorità che presenta l'ingrediente predominante dell’ord
 	\item se la cucina è scarica aumentare il valore di x1(max 1)
 \end{itemize}
 
+
 \paragraph{x2 tempo di preparazione:}
 Rappresenta la durata stimata necessaria per preparare un determinato ordine.
 \begin{itemize}
-	\item normalizzazione: \begin{equation*}
-		\text{tp}_{\text{norm}} = \frac{\text{tp} - \text{tp}_{\text{min}}}{\text{tp}_{\text{max}} - \text{tp}_{\text{min}}}
-	\end{equation*} con tp: tempo di preparazione,\\
-	$\text{tp}_{\text{max}}: \text{tempo di preparazione massimo,}$\\
-	$\text{tp}_{\text{min}}: \text{tempo di preparazione minimo;}$
-	\item $\text{considerare x2 = tp}_{\text{norm}} \text{ per prioritizzare ordini più lunghi,}\\ \text{oppure x2 = 1-tp}_{\text{norm}} \text{ per prioritizzare ordini più brevi.}$
+	\item normalizzazione: 
+	\begin{equation*}
+		\text{tp}{\text{norm}} = \frac{\text{tp} - \text{tp}{\text{min}}}{\text{tp}{\text{max}} - \text{tp}{\text{min}}}	
+	\end{equation*}
+	
+	\item \textbf{tp}: tempo di preparazione
+	\item $\textbf{tp}_{\textbf{max}}$: tempo di preparazione massimo;
+	\item $\textbf{tp}_{\textbf{min}}$: tempo di preparazione minimo;
+	\item Considerare $x2 = \text{tp}_{\text{norm}}$ per prioritizzare ordini più lunghi, oppure $x2 = 1-\text{tp}_{\text{norm}}$ per prioritizzare ordini più brevi.
 \end{itemize}
+
+
 
 \paragraph{x3 urgenza del cliente:}
 Consente ai clienti di specificare la tempestività con cui desiderano ricevere il proprio ordine, in particolare i clienti possono chiedere espressamente di avere urgenza, al contrario possono non dire nulla e tenere un valore di urgenza di default.
@@ -32,22 +38,24 @@ Consente ai clienti di specificare la tempestività con cui desiderano ricevere 
 \paragraph{x4 numero ordine effettuato:}
 Specifica il numero dell’ordine del cliente in ordine temporale, in particolare indica la posizione relativa di un ordine all'interno della sequenza di ordini effettuati da egli stesso.
 \begin{itemize}
+	
 	\item il primo ordine effettuato ha priorità maggiore, mentre i successivi hanno priorità decrescente data dalla normalizzazione, fino ad un numero di ordine soglia oltre il quale la priorità sarà minima;
-
-	\[ f(\text{x4}) = \begin{cases} \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]\\
-
-	$\textbf{noe} \text{: numero ordine effettuato}$\\
-	$\textbf{sogliaMax} \text{: massimo numero ordini effettuabili;}$
-
+	
+	\item funzione: \[f(\text{noe}) = \begin{cases} 1 -  \frac{{\text{noe} - 1}}{{\text{sogliaMax} - 1}} & \text{se } \text{noe} \leq \text{sogliaMax} \\ 0 & \text{se } \text{noe} > \text{sogliaMax} \end{cases} \]
+	
+	
+	\item \textbf{noe} \text{: numero ordine effettuato;}
+	\item \textbf{sogliaMax} \text{: massimo numero ordini effettuabili;}
 	\item \textbf{ESEMPIO: } \textit{sia dato sogliaMax = 5, il 1° avrà priorità 1 (massima), dal 2° al 5° avremo priorità normata, dopo 5 ordine il parametro x4 avrà priorità 0 (minima).}
 \end{itemize}
 
 \paragraph{x5 tempo in attesa:}
 Rappresenta il periodo di tempo trascorso da quando un ordine è stato effettuato fino al momento in cui viene elaborato.
 \begin{itemize}
-	\item normalizzazione: \begin{equation*}
-		\text{x5} = \frac{\text{tempo in attesa}}{\text{tempo max in attesa}}
-	\end{equation*}
+	\item funzione: \[ f(\text{tempo di attesa}) = \begin{cases} \frac{\text{tempo di attesa}}{\text{tempo max in attesa}} & \text{se } \text{tempo di attesa} \leq \text{tempo max di attesa} \\ 1 & \text{se } \text{tempo di attesa} > \text{tempo max di attesa} \end{cases} \]
+	
+	\item \textbf{tempo di attesa:} è dato dalla differenza fra istante di tempo attuale e istante di tempo della richiesta ordine;
+	\item \textbf{tempo max di attesa:} massimo tempo di attesa ordini oltre il quale la priorità è massima;
 	\item considerare un valore massimo di tempo in attesa consentito, in prossimità del quale si ha la priorità più elevata.
 \end{itemize}
 
@@ -95,7 +103,7 @@ I valori dei pesi vengono quindi definiti inizialmente:
 \subsection{Funzione matematica}
 L'equazione proposta rappresenta una somma pesata dei parametri, dove ciascun parametro (x1, x2, x3, x4, x5) viene moltiplicato per il suo relativo peso (p1, p2, p3, p4, p5). I pesi indicano l'importanza relativa dei parametri nel determinare la priorità complessiva di un elemento. La somma pesata dei parametri produce un valore (y) compreso tra 0 e 1, dove 0 indica un valore meno urgente e 1 indica un valore più urgente.
 \begin{equation*}
-	\text{y} = \text{p1}*{\text{x1}} + \text{p2}*{\text{x2}}  + \text{p3}*{\text{x3}}  + \text{p4}*{\text{x4}}  + \text{p5}*{\text{x5}}
+	\text{y} = \text{p1}{\text{x1}} + \text{p2}{\text{x2}}  + \text{p3}{\text{x3}}  + \text{p4}{\text{x4}}  + \text{p5}*{\text{x5}}
 \end{equation*}
 
 \clearpage
