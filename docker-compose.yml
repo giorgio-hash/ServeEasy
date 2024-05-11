@@ -4,7 +4,6 @@ services:
 
   gateway:
     image: gchirico1/serveeasy_gateway:latest
-    build: serveeasy-gateway/
     container_name: gateway
     environment:
       SERVER_PORT: 8080
