@@ -8,6 +8,8 @@ Componenti attualmente in beta:
  * [GestioneCucina](https://github.com/giorgio-hash/GestioneCucina.git): gestione a code verso le postazioni di cucina, classificate per ingrediente;
  * [GestioneCliente](https://github.com/giorgio-hash/GestioneCliente.git): gestione di comande (intesa come collezione dei singoli ordini) ed ordini verso il dispositivo cliente.
 
+Algoritmo attualmente in beta: [indexMinPQ buffer producer-consumer pattern per GestioneComanda](https://github.com/giorgio-hash/algoritmo.git).
+
 ### Setup del deployment (demo)
 
 Prima di procedere è necessario possedere Docker Desktop (Windows, Mac) o Docker Engine (Linux, Mac).
