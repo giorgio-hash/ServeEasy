@@ -49,8 +49,8 @@ services:
       start_period: 40s
     expose:
       - "8080"
-    ports:
-      - "8082:8080"
+#    ports:
+#      - "8082:8080"
 
   GestioneCliente:
     image: gchirico1/gestione_cliente:latest
@@ -73,8 +73,8 @@ services:
       start_period: 40s
     expose:
       - "8080"
-    ports:
-      - "8081:8080"
+#    ports:
+#      - "8081:8080"
 
 
   GestioneComanda:
@@ -98,8 +98,8 @@ services:
       start_period: 40s
     expose:
       - "8080"
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:8080"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
@@ -159,8 +159,8 @@ services:
     volumes:
       - ./db/initial-data-and-schema.sql:/docker-entrypoint-initdb.d/initial-data-and-schema.sql
       - ./db/db_data/:/var/lib/mysql
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
 
   
   phpmyadmin:
