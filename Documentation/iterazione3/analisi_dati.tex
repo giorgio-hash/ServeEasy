@@ -7,7 +7,17 @@ Questa operazione di analisi si è concentrata sulle prestazioni dell'algoritmo 
 \subsection{Prestazioni algoritmo}
 La seguente documentazione è presente in formato originale con il codice Python utilizzato, come notebook di Google Colab al seguente link:
 
-{\footnotesize \href{https://colab.research.google.com/drive/1PZyxKQf85-XFKB7PsUqYRUQSwh0I-cuO?usp=sharing}{https://colab.research.google.com/drive/1PZyxKQf85-XFKB7PsUqYRUQSwh0I-cuO?usp=sharing}}
+\begin{itemize}
+	\item versione 1:
+	
+	 {\footnotesize \href{https://colab.research.google.com/drive/1PZyxKQf85-XFKB7PsUqYRUQSwh0I-cuO?usp=sharing}{https://colab.research.google.com/drive/1PZyxKQf85-XFKB7PsUqYRUQSwh0I-cuO?usp=sharing}}
+	 
+	 \item versione 2 (mostrata di seguito):
+	 
+	 {\footnotesize \href{https://colab.research.google.com/drive/1vJyO7_P-xOQ7RNWgx4I4YvhqxD3cgvAF?usp=sharing}{https://colab.research.google.com/drive/1vJyO7\_P-xOQ7RNWgx4I4YvhqxD3cgvAF?usp=sharing}}
+
+\end{itemize}
+
 
 \subsubsection{Analisi prestazioni algoritmo}
 Il seguente notebook viene utilizzato per fare un'analisi dei dati per verificare il requisito non funzionale della performance:
@@ -26,7 +36,7 @@ Viene caricato e visualizzato il file di report in formato csv che da in output 
 \subsubsection{Analisi Tempo di attesa in base al numero degli ordini}
 Come primo passo viene analizzato come il tempo di attesa varia con l'avanzare del numero di ordini.
 
-Viene utilizzato un grafico a linea per mostrare (in arancione) il tempo di attesa per numero di ordine e (in blu) i valori filtrati con un filtro a media mobile con finestra = 10 valori
+Viene utilizzato un grafico a linea per mostrare (in arancione) il tempo di attesa per numero di ordine e (in blu) i valori filtrati con un filtro a media mobile con finestra = 20 valori
 
 \begin{figure}[H]
 	\centering
@@ -34,20 +44,22 @@ Viene utilizzato un grafico a linea per mostrare (in arancione) il tempo di atte
 	\caption{Analisi Tempo di attesa in base al numero degli ordini\label{fig:lineplot}}
 \end{figure}
 
-Si può notare come con l'aumentare del numero di ordini il tempo di attesa continui a salire quasi in maniera costante, questo è dovuto al fatto che la domanda nel periodo di osservazione è costante e superiore alla capacità della cucina, così gli ordini si accumulano in coda.
+Si può notare come inizialmente la crescita del tempo di attesa sia praticamente costante per poi stabilizzarsi all'interno della banda che va dai 100s ai 200s anche se con un trend crescente. Si può quindi supporre che inizialmente la cucina non riesca a servire la richiesta dei clienti e quindi accumula ordini in coda, ma successivamente riesce a stabilizzarsi verso un valore medio di tempo di attesa costante.
 
 \subsubsection{Analisi distribuzione del tempo di attesa di preparazione degli ordini}
 In questa sezione viene analizzato il tempo di attesa di preparazione degli ordini, ossia il tempo che passa da quando un ordine viene effettuato a quando viene preso in carico dal cuoco, non viene considerato quindi il tempo di preparazione poiché caratteristico del singolo ordine
+
+Viene ripulito il dataset da possibili outlier usando il z-score e rimuovendo le prime 50 osservazioni perchè poco rilevanti (coda scarica).
 
 Viene utilizzato un istogramma con il quale si mostra la frequenza con la quale i vari ordini presentano un certo slot di tempo di attesa, 
 vengono inoltre calcolate e mostrate: media, deviazione standard, mediana, 25° e 75° percentili per una maggiore comprensione.
 
 In un ulteriore istogramma poi si raggruppano queste frequenze in base alla priorità, con valori di Alta, Media e Bassa priorità per capire come l'assegnazione della priorità da parte dell'algoritmo influenza il tempo di attesa di preparazione.\\
-$Media tempo di attesa = 128.982s$\\
-$Deviazione standard tempo di attesa = 79.019s$\\
-$Mediana standard tempo di attesa = 119.218s$\\
-$25° percentile tempo di attesa = 75.894s$\\
-$75° percentile tempo di attesa = 171.767s$
+$Media tempo di attesa = 146.326$\\
+$Deviazione standard tempo di attesa = 88.721$\\
+$Mediana standard tempo di attesa = 133.917$\\
+$25° percentile tempo di attesa = 86.847$\\
+$75° percentile tempo di attesa = 187.355$
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{iterazione3/images/distr_t_attesa_prep.png}
@@ -64,14 +76,16 @@ Dal secondo istogramma è invece possibile notare come tendenzialmente le priori
 \subsubsection{Analisi distribuzione del tempo di attesa in coda degli ordini}
 In questa sezione viene analizzato il tempo di attesa in coda degli ordini, ossia il tempo che passa da quando un ordine viene effettuato a quando viene esce dalla coda per andare in cucina, non viene considerato quindi il tempo di preparazione e il tempo di attesa in cucina.
 
+Viene ripulito il dataset da possibili outlier usando il z-score e rimuovendo le prime 50 osservazioni perché poco rilevanti (coda scarica).
+
 Viene utilizzato un istogramma con il quale si mostra la frequenza con la quale i vari ordini presentano un certo slot di tempo di attesa, vengono inoltre calcolate e mostrate: media, deviazione standard, mediana, 25° e 75° percentili per una maggiore comprensione.
 
 In un ulteriore istogramma poi si raggruppano queste frequenze in base alla priorità, con valori di Alta, Media e Bassa priorità per capire come l'assegnazione della priorità da parte dell'algoritmo influenza il tempo di attesa di preparazione.\\
-$Media tempo di attesa = 73.084s$\\
-$Deviazione standard tempo di attesa = 67.694s$\\
-$Mediana standard tempo di attesa = 61.000s$\\
-$25° percentile tempo di attesa = 10.000s$\\
-$75° percentile tempo di attesa = 113.500s$
+$Media tempo di attesa = 86.819$\\
+$Deviazione standard tempo di attesa = 73.051$\\
+$Mediana standard tempo di attesa = 75.000$\\
+$25° percentile tempo di attesa = 34.000$\\
+$75° percentile tempo di attesa = 110.000$
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{iterazione3/images/distr_t_attesa_coda.png}
