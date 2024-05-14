@@ -54,6 +54,9 @@ docker compose stop
 ### Testing della demo
 Di seguito vengono riportate delle chiamate di prova per il collaudo. Le chiamate documentate e pubblicate su Postman sono disponibili [qui](https://documenter.getpostman.com/view/20761533/2sA3JKcN1D).
 
+_aggiornamento_: ora che il docker-compose.yml è dotato del componente gateway, tutte le chiamate vanno redirette verso 8083. Le chiamate di test verso GestioneComanda non sono direttamente disponibili.
+Togliere i commenti dal docker-compose.yml se si vuole ripristinare il port-binding verso localhost:8082, localhost:8081 e localhost:8080.
+
 Ai fini della demo è stato incluso un file reset_db.bat per eliminare i dati del database, <b>da usare solamente prima o dopo l'avvio della demo</b> .
 ![pagina1](./img/pagina1.jpg)
 ![pagina2](./img/npagina2.jpg)
