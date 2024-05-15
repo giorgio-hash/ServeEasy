@@ -99,7 +99,7 @@ Il  parametro x2 permette di dare maggior priorità agli ordini che hanno un tem
 		\State $\text{tpMin} \gets \text{minimo tempo di preparazione fra gli ordini effettuati}$
 		\medskip
 		\If{$\text{tpDiPreparazione} \leq \text{tpMax}$}
-		\State $x2 \gets \frac{\text{tpDiPreparazione} - \text{tpMax}}{\text{tpMax} - \text{tpMin}}$ \Comment{Normalizzazione}
+		\State $x2 \gets \frac{\text{tpDiPreparazione} - \text{tpMin}}{\text{tpMax} - \text{tpMin}}$ \Comment{Normalizzazione}
 		\Else
 		\State $x2 \gets 1$
 		\EndIf
