@@ -116,5 +116,28 @@ In questo passo viene analizzato come i 5 parametri su cui si basa la priorità 
 \end{figure}
 
 \subsection{Analisi dei thread}
+La analisi delle attività dei thread è stata svolta servendosi delle informazioni fornite dai log.
+
+Il lavoro svolto per ottenere dati interpretabili ha seguito una sequenza di passaggi e script:
+\begin{enumerate}
+	\item Vengono create delle stampe personalizzate nella classe Printer e, alla voce \textit{Run} della toolbar Intellij IDEA, viene imposto il salvataggio dei log nel file \textit{logs.txt};
+	\item Ottenuto  \textit{logs.txt}, questo viene dato input allo script Python3 \textit{log\_to\_dict.py}: questo filtra le sole righe del log interessate, distinte dalla substring \texttt{":::"}, e, per ogni riga, estrae i dati e organizza la tupla in un dizionario Python. Si ottiene quindi una lista di dizionari che viene salvata su un file \textit{input.txt}, creato a scopo di log, e \textit{input.csv}.
+	\item Il file \textit{input.csv} viene dato in input al notebook Google Colab \textit{Grantt.ipynb} che esegue elaborazioni con modulo Pandas e visualizzazioni con modulo Plotly.
+\end{enumerate}
+Successivamente è stata concepita una classificazione, sulla base del tempo, per distinguere diverse categorie di dati.
+Al fine di fornire quindi diverse prospettive sulle simulazioni, i dati sono stati resi disponibili sulla repository GitHub per poter essere resi disponibili automaticamente, con l'ausilio di \texttt{git clone}, in una cartella dell'area di lavoro Notebook.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.35]{iterazione3/images/DataAnalisysThread.jpg}
+	\caption{workflow dalla raccolta al display dei dati
+ \label{fig:dataanalysisthread}}
+\end{figure}
+
+\subsubsection{Diagramma di Gantt}
+Il diagramma di Gantt è stato utilizzato per visualizzare, nel tempo, i periodi di attività dei thread, dall'accesso al buffer all'elaborazione ordini. Si nota che il checker si attiva periodicamente per l'applicazione delle modifiche del valore di priorità delle ordinazioni accodate, con conseguente riordinamento del buffer.
+Inoltre, è possibile notare che, sebbene complessivamente vi sia netta separazione dei periodi di accesso, ci sono momenti di concorrenzialità tra consumer e checker.
+
+Nel diagramma cartesiano associato viene offerta una prospettiva sui dati coinvolti nell'esecuzione dei thread: in particolare, si può notare che la priorità con cui un ordine entra in coda può alle volte determinarne la sua uscita anticipata dal buffer.
 
 \clearpage
