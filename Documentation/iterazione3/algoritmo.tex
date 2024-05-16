@@ -1,6 +1,85 @@
 \section{Algoritmo}
+Al fine di implementare l'algoritmo, si è inialmente pensato di svilupparlo in un ambiente separato dai microservizzi così da avere uno sviluppo più semplificato e di più facile da testare.
+Si è quindi utilizzato un ambiente di sviluppo Java con l'ide IntelliJ.
 
-// TODO: ...
+\subsection{brainstorming}
+La fase iniziale dell'implementazione è stata affrontata su draw.io dove facendo principalmente riferimento al flowchart ed alla struttura data all'algoritmo sono stati individuati i componenti che si adattassero meglio al nostro pseudocodice. 
+L'Output ottenuto da questo brainstorming è infine rappresentato nella seguente immagine:
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.5]{iterazione3/images/Struttura_implementativa_algoritmo.jpg}
+	\caption{logico-strutura dell'algoritmo da implementare\label{fig:Struttura_implementativa_algoritmo}}
+\end{figure}
+
+\subsection{Adattamento struttura dati}
+La scelta implementativa presa ha portato alla ricerca di una struttura equivalente alla \textbf{IndexPriorityQueue}.\\
+Dopo una attenta ricerca la struttura scelta è stata la \textbf{IndexMinPQ} \cite{princeton}, basata su una PriorityQueue indicizzata che permette di costuire un heap dove la minima priorità è a radice.
+Successivamente, è stata sviluppata una classe \textbf{Dizionario} contenente un dizionario (hashMap) ed un array (ArrayList) di supporto per indicizzare univocamente le chiavi della IndexPriorityQueue ed inoltre mantene riutilizzabili gli stessi indici.\\
+Vi era infatti un problema implementativo per il quale ad ogni elemento aggiunto all'heap avrebbe avuto un Id identificativo incrementale causando una esponenzialità di quest'ultimo non desiderata, attraverso il dizionario di supporto è stato quindi possibile riutilizzare degli indici univoci all'interno dell'heap ordinato della indexMinPQ ed avere un accesso diretto all'elemento da estrarre.\\
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.5]{iterazione3/images/dizionario_heap.jpg}
+	\caption{associazione dizionario ed heap\label{fig:dizionario_heap}}
+\end{figure}
+
+\subsection{Implementazione}
+L'effettiva implementazione si è basata su un approccio di sviluppo bottom-up delle varie componenti. \\
+Inizialmente è stata sviluppata la struttura dati attraverso i seguenti passaggi:
+\begin{itemize}
+    \item verificato il corretto funzionamento della IndexMinPQ ed adattato il funzionamento al nostro caso di utilizzo;
+    \item implementato il dizionario composto da hashMap e ArrayList associato all'heap della struttura dati;
+    \item verificato il corretto funzionamento dell'associazione imposta fra le strutture.
+\end{itemize}
+
+Per lo Sviluppo della gestione dei thread:
+\begin{itemize}
+    \item Si è creato un Buffer semaphore gestito inizialmente da tre thread:
+    \begin{itemize}
+        \item \textbf{Producer:} verifica la disponibilità di posti all'interno del buffer ed inserisce gli ordini con una priorità iniziale già assegnata in esso;
+        \item \textbf{Consumer:} estrae l'elemento con priorità più elevata dalla struttura dati per poi inserirlo all'interno delle code di postazione attraverso una FIFO;
+        \item \textbf{Checker:} verifica attraverso una finestra limitata l'aggiornamento di priorità dei vari ordini presenti nel buffer. 
+    \end{itemize}
+    \item adattato il buffer alle strutture dati utilizzate;
+    \item verificato il corretto utilizzo del buffer con le strutture dati con alcuni oggetti test.
+\end{itemize}
+
+Infine sono state sviluppate alcune entità e code utili per simulare il percorso degli ordini effettuati dal cliente fino alla coda di postazione designata per ingrediente principale. 
+Fra esse abbiamo:
+\begin{itemize}
+	\item \textbf{Cliente:} ogni cliente rappresenta un thread che genera un ordine;
+	\item \textbf{Cuoco:} ogni cuoco rappresenta un thread che riceve degli ordini;
+	\item \textbf{Coda postazione:} coda singola che permette di ricevere ordini e processarli come una coda fifo;
+	\item \textbf{OrdinePQ:} classe che rappresenta l'ordine e tutti i suoi attributi;
+	\item \textbf{Gestione priorità:} classe che permette di gestire i pesi \textbf{p} e \textbf{x} che portano al calcolo del \textbf{valore priorità} di ogni ordine.
+\end{itemize}
+
+\subsection{Analisi delle prestazioni}
+
+Per analizzare le prestazioni dell'algoritmo è stato implementato uno script python che permette di generare grafici ed analisi di Gantt direttamente da file csv generati dai log dell'algoritmo. 
+Qui di seguito sono riportati dei link verso i Google Colab utilizzati per fare inferenza sulle simulazioni \href{https://colab.research.google.com/drive/1hyGN4p6SS00ENY7n0lPa2CBTDqbqRAC_?usp=sharing}{Google Colab}.
+
+Per utilizzare tale strumento sono necessari i seguenti passaggi, essi verranno comunque mostrati del readMe del progetto:
+\begin{itemize}
+	\item Aprire il progetto Algoritmo su IntelliJ, effettuare un "Run/Debug" per salvare tutti i log su un file di testo logs.txt;
+	\item Inserire logs.txt nella directory Gantt script;
+	\item Eseguire ora $log_to_dict.py$ per generare dei file $input.csv$. Lo script permette di filtrare le stampe estratte dai log per renderle dei file csv più leggibili;
+	\item Importare ora il file $input.csv$ su Jupyter Notebook chiamato $Gant.ipynb$. Questo notebook permette di aprire i file $input.csv$ e processa i dati per generare i grafici.
+\end{itemize}
+
+
+Vengono ora mostrati alcuni grafici generati da questo processo su casi di studio già precedentemente inseriti:
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.7]{iterazione3/images/gantt_example.jpg}
+	\caption{grafo di Gantt\label{fig:Gantt_example}}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.7]{iterazione3/images/cartesiano_example.jpg}
+	\caption{grafo cartesiano\label{fig:cartesiano-example}}
+\end{figure}
+\newpage
 
 \subsection{Simulazione}
 Viene di seguito mostrato un esempio di funzionamento per via dei messaggi di log sulla console
