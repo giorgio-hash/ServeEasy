@@ -52,35 +52,7 @@ Fra esse abbiamo:
 	\item \textbf{OrdinePQ:} classe che rappresenta l'ordine e tutti i suoi attributi;
 	\item \textbf{Gestione priorità:} classe che permette di gestire i pesi \textbf{p} e \textbf{x} che portano al calcolo del \textbf{valore priorità} di ogni ordine.
 \end{itemize}
-
-\subsection{Analisi delle prestazioni}
-
-Per analizzare le prestazioni dell'algoritmo è stato implementato uno script python che permette di generare grafici ed analisi di Gantt direttamente da file csv generati dai log dell'algoritmo. 
-Qui di seguito sono riportati dei link verso i Google Colab utilizzati per fare inferenza sulle simulazioni \href{https://colab.research.google.com/drive/1hyGN4p6SS00ENY7n0lPa2CBTDqbqRAC_?usp=sharing}{Google Colab}.
-
-Per utilizzare tale strumento sono necessari i seguenti passaggi, essi verranno comunque mostrati del readMe del progetto:
-\begin{itemize}
-	\item Aprire il progetto Algoritmo su IntelliJ, effettuare un "Run/Debug" per salvare tutti i log su un file di testo logs.txt;
-	\item Inserire logs.txt nella directory Gantt script;
-	\item Eseguire ora $log_to_dict.py$ per generare dei file $input.csv$. Lo script permette di filtrare le stampe estratte dai log per renderle dei file csv più leggibili;
-	\item Importare ora il file $input.csv$ su Jupyter Notebook chiamato $Gant.ipynb$. Questo notebook permette di aprire i file $input.csv$ e processa i dati per generare i grafici.
-\end{itemize}
-
-
-Vengono ora mostrati alcuni grafici generati da questo processo su casi di studio già precedentemente inseriti:
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[scale=0.7]{iterazione3/images/gantt_example.jpg}
-	\caption{grafo di Gantt\label{fig:Gantt_example}}
-\end{figure}
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[scale=0.7]{iterazione3/images/cartesiano_example.jpg}
-	\caption{grafo cartesiano\label{fig:cartesiano-example}}
-\end{figure}
 \newpage
-
 \subsection{Simulazione}
 Viene di seguito mostrato un esempio di funzionamento per via dei messaggi di log sulla console
 \subsubsection{Setup:}
