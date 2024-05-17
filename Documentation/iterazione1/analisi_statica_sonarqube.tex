@@ -18,27 +18,6 @@ Una volta istanziati i volumi di Docker e modificato il $docker-compose.yaml$, l
 Creati i volumi sono stati inseriti all'interno del $pom.xml$ di maven i seguenti plugin.
 
 \begin{lstlisting}[language=XML, caption={Implementazioni pom.xml}]
-    <!-- JaCoCo test coverage -->
-    <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.11</version>
-        <executions>
-            <execution>
-                <id>prepare-agent</id>
-                <goals>
-                    <goal>prepare-agent</goal>
-                </goals>
-            </execution>
-            <execution>
-                <id>report</id>
-                <goals>
-                    <goal>report</goal>
-                </goals>
-            </execution>
-        </executions>
-    </plugin>
-</plugins>
 <pluginManagement>
     <plugins>
         <plugin>
@@ -49,10 +28,9 @@ Creati i volumi sono stati inseriti all'interno del $pom.xml$ di maven i seguent
         </plugin>
     </plugins>
 </pluginManagement>
-</build>
 \end{lstlisting}
 
-Come si può notare è stato necessario inserire anche \textbf{Jacoco}\cite{Jacoco} come plugin maven, ovvero una copertura di codice che misura la qualità di un programma che è stato effettivamente eseguito durante un test, così da determinare se il codice è stato testato in modo completo ed efficace.
+Come si può notare è stato necessario inserire anche \textbf{Jacoco}\cite{Jacoco}, \textbf{PMD}\cite{PMD} e \textbf{SpotBugs}\cites{spotbugs} come plugin maven, ovvero una copertura di codice che misura la qualità di un programma che è stato effettivamente eseguito durante un test, così da determinare se il codice è stato testato in modo completo ed efficace.
 
 \paragraph{Come usare SonarQube:}
 
@@ -67,7 +45,7 @@ Una voltà fatto partire il cointainer contenente SonarQube sarà necessario:
  \item lanciare su cmd (non usare PowerShell) il proprio comando:
 \begin{lstlisting}[style=terminal, 
 	caption={Avvio sonarqube}]
-    .\mvnw clean verify sonar:sonar -Dsonar.projectKey=GestioneCliente -Dsonar.projectName='GestioneCliente' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=INSERIRE_PROPRIO_TOKEN_SONARQUBE
+    .\mvnw clean verify site spotbugs:spotbugs sonar:sonar -Dsonar.projectKey=GestioneComanda -Dsonar.projectName='GestioneComanda' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=INSERIRE_PROPRIO_TOKEN_SONARQUBE -Dsonar.java.pmd.reportPaths=/target/pmd.xml -Dsonar.java.checkstyle.reportPaths=/target/checkstyle-result.xml -Dsonar.java.spotbugs.reportPaths=/target/spotbugsXml.xml
 \end{lstlisting}
 \item attendere il fine compilazione e ricaricare la pagina localohost:9000.
 \end{itemize}
