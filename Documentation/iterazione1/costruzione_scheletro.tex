@@ -6,7 +6,7 @@ Dunque, la realizzazione degli adattatori per ogni microservizio si baserà semp
 
 \subsection{Realizzazione database MariaDB}
 Utilizzando PHPMyAdmin, è stata semplificata la creazione ed esportazione del database. Realizzato lo schema dati, la funzione "Esporta" lo salva in un file \texttt{.sql} 
-pronto per l'uso. Assieme allo schema, sono stati inoltre definiti ed esportati dei dati di prova su cui operare.
+pronto per l'uso. Assieme allo schema, sono stati inoltre definiti ed esportati dei dati di prova su cui operare. Inoltre PHPMyAdmin consente di fare inferenza sui dati inseriti.
 
 \begin{figure}[htbp]
 	\centering
@@ -293,13 +293,13 @@ services:
     container_name: kafdrop
     restart: "no"
     ports:
-      - "9000:9000"
+      - "9001:9000"
     environment:
       KAFKA_BROKERCONNECT: "broker:29092"
     depends_on:
       - "broker"
 \end{lstlisting}
-Di seguito (Figura \vref{fig:kafdrop_funzionamento}) viene mostrato un esempio della UI in funzione sulla porta localhost:9000 che mostra tutti i messaggi postati sul topic \textit{sendOrderEvent} ordinati in base all'offset:
+Di seguito (Figura \vref{fig:kafdrop_funzionamento}) viene mostrato un esempio della UI in funzione sulla porta localhost:9001 che mostra tutti i messaggi postati sul topic \textit{sendOrderEvent} ordinati in base all'offset:
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{iterazione1//images/kafdrop_esempio_funzionamento.png}
