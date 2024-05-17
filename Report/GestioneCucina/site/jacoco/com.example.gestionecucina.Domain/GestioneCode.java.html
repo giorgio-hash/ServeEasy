@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestioneCode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneCucina</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecucina.Domain</a> &gt; <span class="el_source">GestioneCode.java</span></div><h1>GestioneCode.java</h1><pre class="source lang-java linenums">package com.example.gestionecucina.Domain;
+
+import com.example.gestionecucina.Domain.Entity.CodaPostazioneEntity;
+import com.example.gestionecucina.Domain.Entity.OrdineEntity;
+import com.example.gestionecucina.Domain.dto.CodaPostazioneDTO;
+import com.example.gestionecucina.Domain.dto.NotificaPrepOrdineDTO;
+import com.example.gestionecucina.Domain.dto.OrdineDTO;
+import com.example.gestionecucina.Domain.mappers.impl.CodaPostazioneMapper;
+import com.example.gestionecucina.Domain.mappers.impl.OrdineMapper;
+import com.example.gestionecucina.Domain.ports.FrontSignalPort;
+import com.example.gestionecucina.Domain.ports.MessagePort;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
+import org.modelmapper.internal.util.Iterables;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L27">@Log</span>
+public class GestioneCode implements FrontSignalPort, CodeIF {
+
+<span class="nc" id="L30">    @Getter</span>
+<span class="fc" id="L31">    @Setter</span>
+    private HashMap&lt;String, CodaPostazioneEntity&gt; postazioni;
+    private final OrdineMapper ordineMapper;
+    private final CodaPostazioneMapper codaPostazioneMapper;
+    private final MessagePort&lt;NotificaPrepOrdineDTO&gt; messagePort;
+    private final DataPort dataPort;
+    @Value(&quot;${spring.application.GestioneCode.init.postconstruct}&quot;)
+    private boolean initPostConstruct;
+    @Autowired
+    public GestioneCode(CodaPostazioneMapper codaPostazioneMapper,
+                        OrdineMapper ordineMapper,
+<span class="fc" id="L42">                        MessagePort&lt;NotificaPrepOrdineDTO&gt; messagePort, DataPort dataPort) {</span>
+<span class="fc" id="L43">        this.codaPostazioneMapper = codaPostazioneMapper;</span>
+<span class="fc" id="L44">        this.ordineMapper = ordineMapper;</span>
+<span class="fc" id="L45">        this.messagePort = messagePort;</span>
+<span class="fc" id="L46">        this.dataPort = dataPort;</span>
+<span class="fc" id="L47">        this.postazioni = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * permette di popolare l’HashMap automaticamente quando l’applicazione viene avviata.
+     */
+    @PostConstruct
+    public void init() {
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (!initPostConstruct) {</span>
+
+            //caricamento degli ingredienti principali da datasource
+<span class="nc" id="L58">            Iterable&lt;String&gt; exsisting = dataPort.getIdIngredienti();</span>
+
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if(Iterables.getLength(exsisting) == 0) throw new RuntimeException(&quot;Database vuoto?&quot;);</span>
+
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            for (String s : exsisting)</span>
+            {
+<span class="nc" id="L64">                log.info(&quot;Inizializzata coda con chiave: &quot; + s);</span>
+<span class="nc" id="L65">                postazioni.put( s , new CodaPostazioneEntity(s));</span>
+<span class="nc" id="L66">            }</span>
+
+<span class="nc" id="L68">            return;</span>
+        }
+
+<span class="fc" id="L71">        CodaPostazioneEntity codaPostazioneEntityA = new CodaPostazioneEntity(&quot;RISO&quot;);</span>
+<span class="fc" id="L72">        CodaPostazioneEntity codaPostazioneEntityB = new CodaPostazioneEntity(&quot;PASTA&quot;);</span>
+<span class="fc" id="L73">        CodaPostazioneEntity codaPostazioneEntityC = new CodaPostazioneEntity(&quot;CARNE&quot;);</span>
+<span class="fc" id="L74">        CodaPostazioneEntity codaPostazioneEntityD = new CodaPostazioneEntity(&quot;PESCE&quot;);</span>
+
+<span class="fc" id="L76">        codaPostazioneEntityA.insert(new OrdineEntity(1,7,&quot;RIS001&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),2));</span>
+<span class="fc" id="L77">        codaPostazioneEntityA.insert(new OrdineEntity(5,1,&quot;RIS015&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),0));</span>
+<span class="fc" id="L78">        codaPostazioneEntityA.insert(new OrdineEntity(8,3,&quot;RIS152&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),1));</span>
+
+<span class="fc" id="L80">        codaPostazioneEntityB.insert(new OrdineEntity(4,2,&quot;PAS780&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),1));</span>
+<span class="fc" id="L81">        codaPostazioneEntityB.insert(new OrdineEntity(7,7,&quot;PAS450&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),0));</span>
+
+<span class="fc" id="L83">        codaPostazioneEntityC.insert(new OrdineEntity(2,4,&quot;CAR580&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),1));</span>
+<span class="fc" id="L84">        codaPostazioneEntityC.insert(new OrdineEntity(3,5,&quot;CAR789&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),0));</span>
+<span class="fc" id="L85">        codaPostazioneEntityC.insert(new OrdineEntity(9,1,&quot;CAR123&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),2));</span>
+<span class="fc" id="L86">        codaPostazioneEntityC.insert(new OrdineEntity(11,2,&quot;CAR789&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),0));</span>
+<span class="fc" id="L87">        codaPostazioneEntityC.insert(new OrdineEntity(12,3,&quot;CAR123&quot;,1,new java.sql.Timestamp(System.currentTimeMillis()),1));</span>
+
+<span class="fc" id="L89">        postazioni.put(&quot;RISO&quot;, codaPostazioneEntityA);</span>
+<span class="fc" id="L90">        postazioni.put(&quot;PASTA&quot;, codaPostazioneEntityB);</span>
+<span class="fc" id="L91">        postazioni.put(&quot;CARNE&quot;, codaPostazioneEntityC);</span>
+<span class="fc" id="L92">        postazioni.put(&quot;PESCE&quot;, codaPostazioneEntityD);</span>
+<span class="fc" id="L93">    }</span>
+
+    @Override
+    public Optional&lt;CodaPostazioneDTO&gt; getCodaPostazione(String ingredientePrincipale) {
+<span class="fc" id="L97">        Optional&lt;CodaPostazioneEntity&gt; codaPostazioneEntity = Optional.ofNullable(postazioni.get(ingredientePrincipale.toUpperCase()));</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (codaPostazioneEntity.isEmpty()) {</span>
+<span class="fc" id="L99">            return Optional.empty();</span>
+        }
+<span class="fc" id="L101">        CodaPostazioneDTO codaPostazioneDTO = codaPostazioneMapper.mapTo(codaPostazioneEntity.get());</span>
+<span class="fc" id="L102">        return Optional.ofNullable(codaPostazioneDTO);</span>
+    }
+
+    @Override
+    public Optional&lt;OrdineDTO&gt; getOrder(String ingredientePrincipale) throws JsonProcessingException {
+<span class="fc" id="L107">        Optional&lt;CodaPostazioneEntity&gt; codaPostazioneEntity = Optional.ofNullable(postazioni.get(ingredientePrincipale.toUpperCase()));</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if(codaPostazioneEntity.isPresent()) {</span>
+<span class="fc" id="L109">            Optional&lt;OrdineEntity&gt; ordineEntity = codaPostazioneEntity.get().element();</span>
+            // TODO: settare stato di ordine su: in preparazione
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">            if (ordineEntity.isPresent()) {</span>
+<span class="fc" id="L112">                OrdineDTO ordineDTO = ordineMapper.mapTo(ordineEntity.get());</span>
+<span class="fc" id="L113">                NotificaPrepOrdineDTO notifica = NotificaPrepOrdineDTO.builder()</span>
+<span class="fc" id="L114">                                .id(ordineDTO.getId())</span>
+<span class="fc" id="L115">                                        .idComanda(ordineDTO.getIdComanda())</span>
+<span class="fc" id="L116">                                                .stato(2)</span>
+<span class="fc" id="L117">                                                        .build();</span>
+<span class="fc" id="L118">                messagePort.send(notifica);</span>
+<span class="fc" id="L119">                return Optional.ofNullable(ordineDTO);</span>
+            }
+        }
+<span class="fc" id="L122">        return Optional.empty();</span>
+    }
+
+    @Override
+    public Optional&lt;OrdineDTO&gt; postNotifica(String ingredientePrincipale,
+                                            NotificaPrepOrdineDTO notificaPrepOrdineDTO) throws JsonProcessingException {
+<span class="fc" id="L128">        Optional&lt;CodaPostazioneEntity&gt; codaPostazioneEntity = Optional.ofNullable(postazioni.get(ingredientePrincipale.toUpperCase()));</span>
+        //TODO: Controllare che la notifica si riferisca effettivamente all'ordine considerato
+        //abbozzato
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if(codaPostazioneEntity.isPresent()) {</span>
+<span class="fc" id="L132">                Optional&lt;OrdineEntity&gt; top_queue = codaPostazioneEntity.get().element();</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">                if(top_queue.isPresent() &amp;&amp; top_queue.get().getId() == notificaPrepOrdineDTO.getId()){</span>
+<span class="fc" id="L134">                    Optional&lt;OrdineEntity&gt; ordineEntity = codaPostazioneEntity.get().remove();</span>
+<span class="fc" id="L135">                    notificaPrepOrdineDTO.setStato(3);</span>
+<span class="fc" id="L136">                    messagePort.send(notificaPrepOrdineDTO);</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                    if (ordineEntity.isPresent()) {</span>
+<span class="fc" id="L138">                        OrdineDTO ordineDTO = ordineMapper.mapTo(ordineEntity.get());</span>
+<span class="fc" id="L139">                        return Optional.ofNullable(ordineDTO);</span>
+                    }
+<span class="nc" id="L141">                }</span>
+<span class="nc" id="L142">                else log.info(&quot;Ordine non presente o coda vuota&quot;);</span>
+<span class="pc" id="L143">        }else log.info(&quot;Coda non esiste&quot;);</span>
+<span class="fc" id="L144">        return Optional.empty();</span>
+    }
+
+    @Override
+    public void push(OrdineDTO dto) throws RuntimeException, JsonProcessingException {
+
+<span class="fc" id="L150">        Optional&lt;OrdineEntity&gt; o_opt = Optional.ofNullable(ordineMapper.mapFrom(dto));</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if(o_opt.isEmpty()) throw new RuntimeException(&quot;Non è possibile mappare OrdineDTO ( &quot;+dto+&quot; ) a OrdineEntity&quot;);</span>
+<span class="fc" id="L152">        OrdineEntity o = o_opt.get();</span>
+
+        //evaluation dell'ingrediente principale attraverso idiatto per ottenere le code associate
+<span class="fc" id="L155">        String cod_ingr = o.getIdPiatto().replaceAll(&quot;[0-9]&quot;, &quot;&quot;);</span>
+<span class="fc" id="L156">        List&lt;String&gt; chiavi_code = postazioni.keySet().stream()</span>
+<span class="fc" id="L157">                .filter(key -&gt; key.startsWith(cod_ingr))</span>
+<span class="fc" id="L158">                .toList();</span>
+        //verifica esistenza code
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">        if(chiavi_code.isEmpty()) throw new RuntimeException(&quot;coda non trovata per cod_ingr: &quot;+ cod_ingr);</span>
+        //selezione coda
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        if(chiavi_code.size() == 1){</span>
+<span class="fc" id="L163">            log.info(&quot;Aggiunto OrdineEntity a coda: &quot;+ chiavi_code.get(0) + &quot;...&quot;);</span>
+<span class="fc" id="L164">            CodaPostazioneEntity coda_selezionata = postazioni.get(chiavi_code.get(0));</span>
+<span class="fc" id="L165">            coda_selezionata.insert(o);</span>
+<span class="fc" id="L166">            log.info(&quot;Coda Aggiornata: &quot; + postazioni.get(chiavi_code.get(0)));</span>
+            //notifica che l'ordine è stato inserito in coda
+<span class="fc" id="L168">            NotificaPrepOrdineDTO notifica = NotificaPrepOrdineDTO.builder()</span>
+<span class="fc" id="L169">                    .id(dto.getId())</span>
+<span class="fc" id="L170">                    .idComanda(dto.getIdComanda())</span>
+<span class="fc" id="L171">                    .stato(1)</span>
+<span class="fc" id="L172">                    .build();</span>
+<span class="fc" id="L173">            messagePort.send(notifica);</span>
+<span class="fc" id="L174">        }</span>
+        else {
+            //TODO per future fasi
+<span class="nc" id="L177">            log.info(&quot;Trovate più code: &quot;+ chiavi_code);</span>
+        }
+
+        //TODO: segnalare quando la coda è piena
+<span class="fc" id="L181">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

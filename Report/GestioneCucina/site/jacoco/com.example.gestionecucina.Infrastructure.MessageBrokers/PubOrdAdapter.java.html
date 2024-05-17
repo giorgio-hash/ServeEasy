@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PubOrdAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneCucina</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecucina.Infrastructure.MessageBrokers</a> &gt; <span class="el_source">PubOrdAdapter.java</span></div><h1>PubOrdAdapter.java</h1><pre class="source lang-java linenums">package com.example.gestionecucina.Infrastructure.MessageBrokers;
+
+import com.example.gestionecucina.Domain.dto.NotificaPrepOrdineDTO;
+import com.example.gestionecucina.Domain.ports.MessagePort;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
+
+/**
+ * Classe che implementa la MessagePort e permette di scrivere un messaggio sul topic specificato del Message Broker
+ */
+@Service
+<span class="fc" id="L20">@Log</span>
+public class PubOrdAdapter implements MessagePort&lt;NotificaPrepOrdineDTO&gt; {
+
+    private final KafkaTemplate&lt;String, String&gt; kafkaTemplate;
+
+    private final ObjectMapper objectMapper;
+
+    /**
+     * topic sul quale è in ascolto la cucina
+     */
+    @Value(&quot;${spring.kafka.producer.topic}&quot;)
+    private String topic;
+
+    @Autowired
+<span class="fc" id="L34">    public PubOrdAdapter(final KafkaTemplate&lt;String, String&gt; kafkaTemplate, final ObjectMapper objectMapper){</span>
+<span class="fc" id="L35">        this.kafkaTemplate = kafkaTemplate;</span>
+<span class="fc" id="L36">        this.objectMapper = objectMapper;</span>
+<span class="fc" id="L37">    }</span>
+
+    public void send(NotificaPrepOrdineDTO notificaPrepOrdineDTO) throws JsonProcessingException {
+
+        // Serializza in un oggetto JSON
+<span class="fc" id="L42">        final String payload = objectMapper.writeValueAsString(notificaPrepOrdineDTO);</span>
+
+        // invia messaggio sul topic specificato
+<span class="fc" id="L45">        CompletableFuture&lt;SendResult&lt;String, String&gt;&gt; future = kafkaTemplate.send(topic, payload);</span>
+<span class="fc" id="L46">        future.whenComplete((result,ex)-&gt;{</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            if(ex == null){</span>
+<span class="fc" id="L48">                log.info(&quot;Sent Message=[&quot; + payload + &quot;] with offset=[&quot; + result.getRecordMetadata().offset() + &quot;]&quot;);</span>
+            }
+            else{
+<span class="nc" id="L51">                log.info(&quot;Unable to send message=[&quot; + payload + &quot;] due to : &quot; + ex.getMessage());</span>
+            }
+<span class="fc" id="L53">        });</span>
+<span class="fc" id="L54">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

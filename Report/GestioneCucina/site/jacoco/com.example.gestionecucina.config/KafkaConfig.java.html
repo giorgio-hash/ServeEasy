@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KafkaConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneCucina</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecucina.config</a> &gt; <span class="el_source">KafkaConfig.java</span></div><h1>KafkaConfig.java</h1><pre class="source lang-java linenums">package com.example.gestionecucina.config;
+
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Classe configurazione di Kafka utile per implementare il message Broker
+ */
+@Configuration
+<span class="fc" id="L21">public class KafkaConfig {</span>
+
+    @Value(&quot;${spring.kafka.bootstrap-servers}&quot;)
+    private String bootstrapServers;
+
+    /*
+        @Value(&quot;${spring.kafka.producer.topic}&quot;)
+        private Stringopic;
+
+        @Bean
+        public NewTopic topic() {
+            return TopicBuilder.name(topic)
+                    .partitions(1)
+                    .replicas(1)
+                    .build();
+        }
+    */
+    @Bean
+    public ProducerFactory&lt;String, String&gt; producerFactory() {
+<span class="fc" id="L40">        Map&lt;String, Object&gt; configProps = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L41">        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);</span>
+<span class="fc" id="L42">        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);</span>
+<span class="fc" id="L43">        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);</span>
+<span class="fc" id="L44">        return new DefaultKafkaProducerFactory&lt;&gt;(configProps);</span>
+    }
+
+    @Bean
+    public KafkaTemplate&lt;String, String&gt; kafkaTemplate() {
+<span class="fc" id="L49">        return new KafkaTemplate&lt;&gt;(producerFactory());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

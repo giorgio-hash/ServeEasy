@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JPADBAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneComanda</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecomanda.Infrastructure.Repository</a> &gt; <span class="el_source">JPADBAdapter.java</span></div><h1>JPADBAdapter.java</h1><pre class="source lang-java linenums">package com.example.gestionecomanda.Infrastructure.Repository;
+
+import com.example.gestionecomanda.Domain.ports.DataPort;
+import com.example.gestionecomanda.Domain.Entity.OrdineEntity;
+import com.example.gestionecomanda.Domain.Repository.OrdineRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+/**
+ * Classe adatatore della porta DataPort con la quale si effettuano operazioni sul database utilizzando JPA
+ */
+@Repository
+public class JPADBAdapter implements DataPort {
+
+    private final OrdineRepository ordineRepository;
+
+    @Autowired
+<span class="fc" id="L23">    public JPADBAdapter(OrdineRepository ordineRepository) {</span>
+<span class="fc" id="L24">        this.ordineRepository = ordineRepository;</span>
+<span class="fc" id="L25">    }</span>
+
+    @Override
+    public boolean isOrderExist(int id) {
+<span class="fc" id="L29">        return ordineRepository.existsById(id);</span>
+    }
+
+    @Override
+    public OrdineEntity saveOrder(OrdineEntity ordineEntity) {
+<span class="fc" id="L34">        return ordineRepository.save(ordineEntity);</span>
+    }
+
+    @Override
+    public Optional&lt;OrdineEntity&gt; getOrderById(int id) {
+<span class="fc" id="L39">        return ordineRepository.findById(id);</span>
+    }
+
+    @Override
+    public OrdineEntity updateOrder(int id, OrdineEntity ordineEntity) {
+<span class="fc" id="L44">        ordineEntity.setId(id);</span>
+
+<span class="fc" id="L46">        return ordineRepository.findById(ordineEntity.getId()).map(existingOrder -&gt; {</span>
+<span class="fc" id="L47">            Optional.ofNullable(ordineEntity.getStato()).ifPresent(existingOrder::setStato);</span>
+<span class="fc" id="L48">            Optional.ofNullable(ordineEntity.getUrgenzaCliente()).ifPresent(existingOrder::setUrgenzaCliente);</span>
+<span class="fc" id="L49">            return ordineRepository.save(existingOrder);</span>
+<span class="pc" id="L50">        }).orElseThrow(() -&gt; new RuntimeException(&quot;Order does not exist&quot;));</span>
+    }
+
+    @Override
+    public List&lt;OrdineEntity&gt; findAllOrdersByIdComanda(int idComanda) {
+<span class="fc" id="L55">        return StreamSupport.stream(ordineRepository</span>
+<span class="fc" id="L56">                                .findOrdineEntitiesByIdComanda(idComanda)</span>
+<span class="fc" id="L57">                                .spliterator(),</span>
+                        false)
+<span class="fc" id="L59">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public void deleteOrder(int id) {
+<span class="fc" id="L64">        ordineRepository.deleteById(id);</span>
+<span class="fc" id="L65">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

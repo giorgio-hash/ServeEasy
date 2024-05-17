@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestAPICucina.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneCucina</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecucina.Interface.HTTPControllers</a> &gt; <span class="el_source">RestAPICucina.java</span></div><h1>RestAPICucina.java</h1><pre class="source lang-java linenums">package com.example.gestionecucina.Interface.HTTPControllers;
+
+import com.example.gestionecucina.Domain.dto.CodaPostazioneDTO;
+import com.example.gestionecucina.Domain.dto.NotificaPrepOrdineDTO;
+import com.example.gestionecucina.Domain.dto.OrdineDTO;
+import com.example.gestionecucina.Domain.ports.FrontSignalPort;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+
+@RestController
+public class RestAPICucina implements APICucina{
+
+    private FrontSignalPort frontSignalPort;
+
+    @Autowired
+<span class="fc" id="L21">    public RestAPICucina(FrontSignalPort frontSignalPort) {</span>
+<span class="fc" id="L22">        this.frontSignalPort = frontSignalPort;</span>
+<span class="fc" id="L23">    }</span>
+
+    @Override
+    public ResponseEntity&lt;CodaPostazioneDTO&gt; getQueue(String ingredienteprincipale) {
+<span class="fc" id="L27">        Optional&lt;CodaPostazioneDTO&gt; codaPostazioneDTO = frontSignalPort.getCodaPostazione(ingredienteprincipale);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if(!codaPostazioneDTO.isPresent())</span>
+<span class="fc" id="L29">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+<span class="fc" id="L30">        return new ResponseEntity&lt;&gt;(codaPostazioneDTO.get(), HttpStatus.OK);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;OrdineDTO&gt; selectOrder(String ingredienteprincipale) throws JsonProcessingException {
+<span class="fc" id="L35">        Optional&lt;OrdineDTO&gt; ordineDTO = frontSignalPort.getOrder(ingredienteprincipale);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if(!ordineDTO.isPresent())</span>
+<span class="fc" id="L37">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+<span class="fc" id="L38">        return new ResponseEntity&lt;&gt;(ordineDTO.get(), HttpStatus.OK);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;OrdineDTO&gt; completeOrder
+            (String ingredienteprincipale,
+             NotificaPrepOrdineDTO notificaPrepOrdineDTO)
+            throws JsonProcessingException {
+<span class="fc" id="L46">        Optional&lt;OrdineDTO&gt; ordineDTO = frontSignalPort.postNotifica(ingredienteprincipale, notificaPrepOrdineDTO);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if(!ordineDTO.isPresent())</span>
+<span class="fc" id="L48">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+<span class="fc" id="L49">        return new ResponseEntity&lt;&gt;(ordineDTO.get(), HttpStatus.CREATED);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
