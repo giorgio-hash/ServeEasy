@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+GestioneCliente,com.example.gestionecliente.Infrastructure.Repository,JPAOrderAdapter,17,37,2,0,2,9,2,6,1,6
+GestioneCliente,com.example.gestionecliente.Infrastructure.Repository,JPAMenuAdapter,0,15,0,0,0,5,0,3,0,3
+GestioneCliente,com.example.gestionecliente.Interface.HTTPController,RestAPICliente,84,107,10,8,13,24,10,8,2,7
+GestioneCliente,com.example.gestionecliente.config,JPAConfiguration,3,0,0,0,1,0,1,0,1,0
+GestioneCliente,com.example.gestionecliente.config,JsonConfig,0,22,0,0,0,5,0,2,0,2
+GestioneCliente,com.example.gestionecliente.config,KafkaConfig,0,34,0,0,0,7,0,3,0,3
+GestioneCliente,com.example.gestionecliente.config,MapperConfig,0,14,0,0,0,4,0,2,0,2
+GestioneCliente,com.example.gestionecliente,GestioneClienteApplication,5,3,0,0,2,1,1,1,1,1
+GestioneCliente,com.example.gestionecliente.Infrastructure.MessageBroker,PubOrderProducer,6,43,1,1,1,12,1,4,0,4

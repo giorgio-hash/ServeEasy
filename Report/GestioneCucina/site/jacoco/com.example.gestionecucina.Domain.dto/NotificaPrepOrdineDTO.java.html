@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificaPrepOrdineDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneCucina</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecucina.Domain.dto</a> &gt; <span class="el_source">NotificaPrepOrdineDTO.java</span></div><h1>NotificaPrepOrdineDTO.java</h1><pre class="source lang-java linenums">package com.example.gestionecucina.Domain.dto;
+
+import lombok.*;
+
+/**
+ * Data Transfer Object che notifica l'avvenuta preparazione dell'ordine da parte della cucina
+ */
+<span class="pc bpc" id="L8" title="6 of 12 branches missed.">@Data</span>
+<span class="fc" id="L9">@AllArgsConstructor</span>
+<span class="fc" id="L10">@NoArgsConstructor</span>
+<span class="fc" id="L11">@Setter</span>
+@Getter
+<span class="pc" id="L13">@Builder</span>
+public class NotificaPrepOrdineDTO {
+
+    /**
+     * Identificatore dell'ordine
+     */
+<span class="fc" id="L19">    private int id;</span>
+
+    /**
+     * Identificatore della comanda di cui l'ordine fa parte
+     */
+<span class="fc" id="L24">    private int idComanda;</span>
+
+    /**
+     * Stato dell'ordine
+     * 0: Ordine preso in carico
+     * 1: Ordine in coda di preparazione
+     * 2: Ordine in preparazione
+     * 3: Ordine preparato
+     */
+<span class="fc" id="L33">    private int stato;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
