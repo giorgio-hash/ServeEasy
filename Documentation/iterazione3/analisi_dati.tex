@@ -125,7 +125,7 @@ Il lavoro svolto per ottenere dati interpretabili ha seguito una sequenza di pas
 	\item Il file \textit{input.csv} viene dato in input al notebook Google Colab \textit{Grantt.ipynb} che esegue elaborazioni con modulo Pandas e visualizzazioni con modulo Plotly.
 \end{enumerate}
 Successivamente è stata concepita una classificazione, sulla base del tempo, per distinguere diverse categorie di dati.
-Al fine di fornire quindi diverse prospettive sulle simulazioni, i dati sono stati resi disponibili sulla repository GitHub per poter essere resi disponibili automaticamente, con l'ausilio di \texttt{git clone}, in una cartella dell'area di lavoro Notebook.
+Al fine di fornire quindi diverse prospettive sulle simulazioni, i dati sono stati resi disponibili sulla repository GitHub per poter essere resi disponibili automaticamente, con l'ausilio di \texttt{git clone}, in una cartella dell'area di lavoro Notebook \href{https://colab.research.google.com/drive/1hyGN4p6SS00ENY7n0lPa2CBTDqbqRAC_?usp=sharing}{Google Colab}.
 
 \begin{figure}[htbp]
 	\centering
@@ -139,5 +139,17 @@ Il diagramma di Gantt è stato utilizzato per visualizzare, nel tempo, i periodi
 Inoltre, è possibile notare che, sebbene complessivamente vi sia netta separazione dei periodi di accesso, ci sono momenti di concorrenzialità tra consumer e checker.
 
 Nel diagramma cartesiano associato viene offerta una prospettiva sui dati coinvolti nell'esecuzione dei thread: in particolare, si può notare che la priorità con cui un ordine entra in coda può alle volte determinarne la sua uscita anticipata dal buffer.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.7]{iterazione3/images/gantt_example.jpg}
+	\caption{grafo di Gantt\label{fig:Gantt_example}}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.7]{iterazione3/images/cartesiano_example.jpg}
+	\caption{grafo cartesiano\label{fig:cartesiano-example}}
+\end{figure}
 
 \clearpage
