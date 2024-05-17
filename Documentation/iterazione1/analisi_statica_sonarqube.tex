@@ -64,10 +64,10 @@ Una voltà fatto partire il cointainer contenente SonarQube sarà necessario:
  \item modicare la propria password con una propria locale;
  \item creare un nuovo progetto locale impostando nomi e branch desiderati;
  \item generare un \textbf{token} locale e specificare mavem come proprio framework;
- \item lanciare su cmd il proprio comando:
+ \item lanciare su cmd (non usare PowerShell) il proprio comando:
 \begin{lstlisting}[style=terminal, 
 	caption={Avvio sonarqube}]
-    ./mvnw clean verify sonar:sonar -Dsonar.projectKey=GestioneCliente -Dsonar.projectName='GestioneCliente' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=INSERIRE_PROPRIO_TOKEN_SONARQUBE
+    .\mvnw clean verify sonar:sonar -Dsonar.projectKey=GestioneCliente -Dsonar.projectName='GestioneCliente' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=INSERIRE_PROPRIO_TOKEN_SONARQUBE
 \end{lstlisting}
 \item attendere il fine compilazione e ricaricare la pagina localohost:9000.
 \end{itemize}
@@ -121,20 +121,20 @@ Esse Vengono rappresentate anche attraverso grafici di bole facilmente leggibili
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.30]{iterazione1/images/coverage_percent_modifier.png}
+	\includegraphics[scale=0.35]{iterazione1/images/coverage_percent_modifier.png}
 	\caption{Coverage variata nel corso delle modifiche testate\label{fig:coverage percent modifier}}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.50]{iterazione1/images/secutiry.png}
-	\caption{diagramma di bole sulla secutity\label{fig:security}}
+	\caption{diagramma di Bolle sulla secutity\label{fig:security}}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.50]{iterazione1/images/risk.png}
-	\caption{diagramma di bole sui risk\label{fig:risk}}
+	\caption{diagramma di Bolle sui risk\label{fig:risk}}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -167,6 +167,7 @@ Esse Vengono rappresentate anche attraverso grafici di bole facilmente leggibili
 	\caption{esempio caso uncoverage\label{fig:esempio caso uncoverage}}
 \end{figure}
 
+\newpage
 Una breve Panoramica delle rules di java esistenti su SonarQube, ognuna di esse può essere totalmente modificata.
 \begin{figure}[htbp]
 	\centering
