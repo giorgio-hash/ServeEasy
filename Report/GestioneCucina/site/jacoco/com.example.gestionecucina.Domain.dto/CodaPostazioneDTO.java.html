@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CodaPostazioneDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneCucina</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecucina.Domain.dto</a> &gt; <span class="el_source">CodaPostazioneDTO.java</span></div><h1>CodaPostazioneDTO.java</h1><pre class="source lang-java linenums">package com.example.gestionecucina.Domain.dto;
+
+import com.example.gestionecucina.Domain.CodaPostazioneIF;
+import lombok.*;
+
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.Queue;
+
+/**
+ * Coda di una singola postazione della cucina
+ */
+@Getter
+public class CodaPostazioneDTO implements CodaPostazioneIF&lt;OrdineDTO&gt; {
+
+    /**
+     * identificativo della coda di postazione (IN MAIUSCOLO)
+     */
+<span class="fc" id="L19">    private String ingredientePrincipale;</span>
+
+    /**
+     * numero ordini presenti in coda
+     */
+<span class="fc" id="L24">    @Setter</span>
+<span class="fc" id="L25">    private int numeroOrdiniPresenti;</span>
+
+    /**
+     * grado di riempimento attuale della coda
+     */
+<span class="fc" id="L30">    private double gradoRiempimento;</span>
+
+    /**
+     * capacita' massima della coda
+     */
+<span class="fc" id="L35">    private final int capacita = 5;</span>
+
+    /**
+     * coda di ordinazioni
+     */
+<span class="fc" id="L40">    @Setter</span>
+<span class="fc" id="L41">    private Queue&lt;OrdineDTO&gt; queue;</span>
+
+<span class="fc" id="L43">    public CodaPostazioneDTO(String ingredientePrincipale) {</span>
+<span class="fc" id="L44">        this.ingredientePrincipale = ingredientePrincipale;</span>
+<span class="fc" id="L45">        this.numeroOrdiniPresenti = 0;</span>
+<span class="fc" id="L46">        this.gradoRiempimento = 0.0;</span>
+<span class="fc" id="L47">        this.queue = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L48">    }</span>
+
+    @Override
+    public boolean insert(OrdineDTO ordineDTO) {
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (numeroOrdiniPresenti &gt;= capacita)</span>
+<span class="nc" id="L53">            return false;</span>
+<span class="fc" id="L54">        boolean status = queue.offer(ordineDTO);</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (status) {</span>
+<span class="fc" id="L56">            this.numeroOrdiniPresenti += 1;</span>
+<span class="fc" id="L57">            this.gradoRiempimento = (numeroOrdiniPresenti / capacita);</span>
+        }
+<span class="fc" id="L59">        return status;</span>
+    }
+
+    @Override
+    public Optional&lt;OrdineDTO&gt; remove() {
+<span class="fc" id="L64">        Optional&lt;OrdineDTO&gt; ordineDTO = Optional.ofNullable(queue.poll());</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (ordineDTO.isPresent()) {</span>
+<span class="fc" id="L66">            this.numeroOrdiniPresenti -= 1;</span>
+<span class="fc" id="L67">            this.gradoRiempimento = (numeroOrdiniPresenti / capacita);</span>
+        }
+<span class="fc" id="L69">        return ordineDTO;</span>
+    }
+
+    @Override
+    public Optional&lt;OrdineDTO&gt; element() {
+<span class="nc" id="L74">        Optional&lt;OrdineDTO&gt; ordineDTO = Optional.ofNullable(queue.peek());</span>
+<span class="nc" id="L75">        return ordineDTO;</span>
+    }
+
+    @Override
+    public boolean isFull() {
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        return numeroOrdiniPresenti == capacita;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

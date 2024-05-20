@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneComanda</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecomanda.Interface.testControllers</a> &gt; <span class="el_source">TestController.java</span></div><h1>TestController.java</h1><pre class="source lang-java linenums">package com.example.gestionecomanda.Interface.testControllers;
+
+import com.example.gestionecomanda.Domain.dto.NotificaOrdineDTO;
+import com.example.gestionecomanda.Domain.dto.NotificaPrepOrdineDTO;
+import com.example.gestionecomanda.Domain.ports.DataPort;
+import com.example.gestionecomanda.Domain.Entity.OrdineEntity;
+import com.example.gestionecomanda.Domain.dto.OrdineDTO;
+import com.example.gestionecomanda.Domain.mappers.Mapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * Implementazione del REST Controller seguendo lo stile Interface Driven Controller
+ */
+@RestController
+public class TestController implements TestAPI {
+
+    private TestService testService;
+    private Mapper&lt;OrdineEntity, OrdineDTO&gt; ordineMapper;
+    private DataPort dataPort;
+
+    @Value(&quot;${spring.kafka.consumer.gestioneCliente.topic}&quot;)
+    private String topic_notifyOrderEvent;
+
+    @Value(&quot;${spring.kafka.consumer.gestioneCucina.topic}&quot;)
+    private String topic_notifyPrepEvent;
+
+    @Autowired
+<span class="fc" id="L39">    public TestController(TestService testService, Mapper&lt;OrdineEntity, OrdineDTO&gt; ordineMapper, DataPort dataPort) {</span>
+<span class="fc" id="L40">        this.testService = testService;</span>
+<span class="fc" id="L41">        this.ordineMapper = ordineMapper;</span>
+<span class="fc" id="L42">        this.dataPort = dataPort;</span>
+<span class="fc" id="L43">    }</span>
+
+    @Override
+    public ResponseEntity&lt;OrdineDTO&gt; addOrdine(OrdineDTO ordineDTO) {
+<span class="fc" id="L47">        OrdineEntity ordineEntity = ordineMapper.mapFrom(ordineDTO);</span>
+<span class="fc" id="L48">        OrdineEntity savedOrdineEntity = dataPort.saveOrder(ordineEntity);</span>
+<span class="fc" id="L49">        OrdineDTO savedOrdineDTO = ordineMapper.mapTo(savedOrdineEntity);</span>
+<span class="fc" id="L50">        return new ResponseEntity&lt;&gt;(savedOrdineDTO, HttpStatus.CREATED);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;OrdineDTO&gt; getOrdine(int id) {
+<span class="fc" id="L55">        Optional&lt;OrdineEntity&gt; ordineEntity = dataPort.getOrderById(id);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if(ordineEntity.isPresent()){</span>
+<span class="fc" id="L57">            OrdineDTO ordineDTO = ordineMapper.mapTo(ordineEntity.get());</span>
+<span class="fc" id="L58">            return new ResponseEntity&lt;&gt;(ordineDTO, HttpStatus.OK);</span>
+        }
+<span class="fc" id="L60">        return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;OrdineDTO&gt; partialUpdateOrdine(@PathVariable int id, @RequestBody OrdineDTO ordineDTO) {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if(!dataPort.isOrderExist(id))</span>
+<span class="nc" id="L66">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+
+<span class="fc" id="L68">        OrdineEntity ordineEntity = ordineMapper.mapFrom(ordineDTO);</span>
+<span class="fc" id="L69">        OrdineEntity updatedEntity = dataPort.updateOrder(id, ordineEntity);</span>
+
+<span class="fc" id="L71">        return new ResponseEntity&lt;&gt;(ordineMapper.mapTo(updatedEntity),HttpStatus.OK);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;List&lt;OrdineDTO&gt;&gt; getAllOrdersByIdComanda(int idComanda) {
+<span class="fc" id="L76">        List&lt;OrdineEntity&gt; ordini = dataPort.findAllOrdersByIdComanda(idComanda);</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if(!ordini.isEmpty())</span>
+<span class="fc" id="L78">            return new ResponseEntity&lt;&gt;(ordini.stream()</span>
+<span class="fc" id="L79">                    .map(ordineMapper::mapTo)</span>
+<span class="fc" id="L80">                    .collect(Collectors.toList()),HttpStatus.OK);</span>
+        else
+<span class="fc" id="L82">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+    }
+
+    @Override
+    public ResponseEntity deleteOrder(@PathVariable(&quot;id&quot;) int id) {
+<span class="fc" id="L87">        dataPort.deleteOrder(id);</span>
+<span class="fc" id="L88">        return new ResponseEntity(HttpStatus.NO_CONTENT);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;OrdineDTO&gt; sendOrderEvent(@RequestBody OrdineDTO ordineDTO) throws JsonProcessingException {
+<span class="fc" id="L93">        OrdineEntity ordineEntity = ordineMapper.mapFrom(ordineDTO);</span>
+<span class="fc" id="L94">        OrdineEntity savedOrdineEntity = dataPort.saveOrder(ordineEntity);</span>
+<span class="fc" id="L95">        OrdineDTO savedOrdineDTO = ordineMapper.mapTo(savedOrdineEntity);</span>
+<span class="fc" id="L96">        testService.sendMessageToTopicSendOrderEvent(savedOrdineDTO);</span>
+<span class="fc" id="L97">        return new ResponseEntity&lt;&gt;(savedOrdineDTO, HttpStatus.CREATED);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;String&gt; getMessageFromTopicSendOrderEvent() {
+<span class="fc" id="L102">        Optional&lt;String&gt; message = testService.peekFromSendOrderEvent();</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if(message.isPresent())</span>
+<span class="fc" id="L104">            return new ResponseEntity&lt;&gt;(message.get(), HttpStatus.OK);</span>
+        else
+<span class="nc" id="L106">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;NotificaOrdineDTO&gt; sendNotifyOrderEvent(@RequestBody NotificaOrdineDTO notificaOrdineDTO) throws JsonProcessingException {
+<span class="fc" id="L111">        String message = testService.serializeObject(notificaOrdineDTO);</span>
+<span class="fc" id="L112">        testService.sendMessageToTopic(message, topic_notifyOrderEvent);</span>
+<span class="fc" id="L113">        return new ResponseEntity&lt;&gt;(notificaOrdineDTO, HttpStatus.CREATED);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;NotificaOrdineDTO&gt; getMessageFromTopicNotifyOrderEvent() {
+<span class="fc" id="L118">        Optional&lt;NotificaOrdineDTO&gt; message = testService.peekFromNotifyOrderEvent();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if(message.isPresent())</span>
+<span class="fc" id="L120">            return new ResponseEntity&lt;&gt;(message.get(), HttpStatus.OK);</span>
+        else
+<span class="nc" id="L122">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;NotificaPrepOrdineDTO&gt; sendNotifyPrepEvent(@RequestBody NotificaPrepOrdineDTO notificaPrepOrdineDTO) throws JsonProcessingException {
+<span class="fc" id="L127">        String message = testService.serializeObject(notificaPrepOrdineDTO);</span>
+<span class="fc" id="L128">        testService.sendMessageToTopic(message, topic_notifyPrepEvent);</span>
+<span class="fc" id="L129">        return new ResponseEntity&lt;&gt;(notificaPrepOrdineDTO, HttpStatus.CREATED);</span>
+    }
+
+    @Override
+    public ResponseEntity&lt;NotificaPrepOrdineDTO&gt; getMessageFromTopicNotifyPrepEvent() {
+<span class="fc" id="L134">        Optional&lt;NotificaPrepOrdineDTO&gt; message = testService.peekFromNotifyPrepEvent();</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if(message.isPresent())</span>
+<span class="fc" id="L136">            return new ResponseEntity&lt;&gt;(message.get(), HttpStatus.OK);</span>
+        else
+<span class="nc" id="L138">            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

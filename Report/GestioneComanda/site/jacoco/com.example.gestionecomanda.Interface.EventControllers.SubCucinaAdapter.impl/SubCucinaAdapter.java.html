@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SubCucinaAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GestioneComanda</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionecomanda.Interface.EventControllers.SubCucinaAdapter.impl</a> &gt; <span class="el_source">SubCucinaAdapter.java</span></div><h1>SubCucinaAdapter.java</h1><pre class="source lang-java linenums">package com.example.gestionecomanda.Interface.EventControllers.SubCucinaAdapter.impl;
+
+import com.example.gestionecomanda.Domain.dto.NotificaPrepOrdineDTO;
+import com.example.gestionecomanda.Domain.ports.CucinaPort;
+import com.example.gestionecomanda.Interface.EventControllers.SubCucinaAdapter.NotifyPrepEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CountDownLatch;
+
+@Component
+public class SubCucinaAdapter implements NotifyPrepEvent {
+
+    private ObjectMapper objectMapper;
+    private final CucinaPort cucinaPort;
+
+    /**
+     * variabile thread safe che serve per fini di test per verificare che il listener abbia ricevuto un messaggio
+     */
+<span class="fc" id="L27">    private CountDownLatch latch = new CountDownLatch(1);</span>
+<span class="fc" id="L28">    private final Logger logger = LoggerFactory.getLogger(SubCucinaAdapter.class);</span>
+    private NotificaPrepOrdineDTO lastMessageReceived;
+
+    @Autowired
+<span class="fc" id="L32">    public SubCucinaAdapter(CucinaPort cucinaPort, ObjectMapper objectMapper) {</span>
+<span class="fc" id="L33">        this.cucinaPort = cucinaPort;</span>
+<span class="fc" id="L34">        this.objectMapper = objectMapper;</span>
+<span class="fc" id="L35">    }</span>
+
+    @Override
+    public void receive(@Payload String message,
+                        @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+                        @Header(KafkaHeaders.RECEIVED_PARTITION) Integer partition,
+                        @Header(KafkaHeaders.OFFSET) Long offset) throws JsonProcessingException {
+<span class="fc" id="L42">        logger.info(&quot;Received a message {}, from {} topic, &quot; +</span>
+<span class="fc" id="L43">                &quot;{} partition, and {} offset&quot;, message.toString(), topic, partition, offset);</span>
+<span class="fc" id="L44">        NotificaPrepOrdineDTO notificaPrepOrdineDTO = objectMapper.readValue(message, NotificaPrepOrdineDTO.class);</span>
+<span class="fc" id="L45">        cucinaPort.setPreparationStatus(notificaPrepOrdineDTO);</span>
+<span class="fc" id="L46">        lastMessageReceived = notificaPrepOrdineDTO;</span>
+<span class="fc" id="L47">        latch.countDown();</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * resetta il valore del latch
+     */
+    public void resetLatch() {
+<span class="fc" id="L54">        latch = new CountDownLatch(1);</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * restituisce il latch
+     *
+     * @return latch: variabile thread safe che serve per fini di test per verificare
+     * che il listener abbia ricevuto un messaggio
+     */
+    public CountDownLatch getLatch() {
+<span class="fc" id="L64">        return latch;</span>
+    }
+
+    @Override
+    public NotificaPrepOrdineDTO getLastMessageReceived() {
+<span class="fc" id="L69">        return lastMessageReceived;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
